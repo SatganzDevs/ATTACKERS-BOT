@@ -5,10 +5,10 @@
 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGJDcHPHsij7anNGZCHUw3xdzpsjSOWm17d_U7rFrXxpoxESk1tEbwJ_Zk&s=10" alt="LEXXY BOT" width="200"/>
 
 <p align="center">
-    <a href="https://Lexxy24.github.io">
+    <a href="https://github.com/Satganz Devs>
         <img
-            src="https://readme-typing-svg.herokuapp.com?size=15&width=280&lines=Created+By+Lexxy+Official+🙏"
-            alt="YT Lexxy Official"
+            src="https://readme-typing-svg.herokuapp.com?size=15&width=280&lines=Created+By+Satganz+Devs+☺️"
+            alt="Satganz Devs"
         />
     </a>
 </p>
@@ -17,7 +17,7 @@
 
 Click the deploy icon below !
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Lexxy24/BOTMD)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/SatganzDevs/ATTACKERS-BOT.git)
 
 ```bash
  > heroku/nodejs
@@ -34,16 +34,16 @@ Click the deploy icon below !
 > pkg install ffmpeg
 > pkg install yarn
 > termux-setup-storage
-> git clone https://github.com/Lexxy24/BOTMD.git
-> cd BOTMD
+> git clone https://github.com/SatganzDevs/ATTACKERS-BOT.git
+> cd ATTACKERS-BOT
 > yarn
 > npm start
 ```
 
 ## RDP/VPS USER
 ```bash 
-> git clone https://github.com/Lexxy24/BOTMD.git
-> cd BOTMD
+> git clone https://github.com/SatganzDevs/ATTACKERS-BOT.git
+> cd ATTACKERS-BOT
 > npm install
 > npm start
 ```
@@ -53,4 +53,4 @@ Click the deploy icon below !
 - [Group Bot Wa 2](https://chat.whatsapp.com/E3zewfxrc5pKE6Rzb3BuqG)
 - [Group Bot Wa 3](https://chat.whatsapp.com/EDYV3OK6wHaDAb6J1iMnUa)
 - [YouTube ](https://youtube.com/c/LEX4YOUU)
-- [Whatsapp ](https://wa.me/6285789004732)
+- [Whatsapp ](https://wa.me/6281326701742)
