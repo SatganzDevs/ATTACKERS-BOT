@@ -255,19 +255,12 @@ sourceUrl: global.web, thumbnail: thumb
 		if (m.chat === 'status@broadcast') {
 		satria.chatRead(m.chat)
 	}
-//autoreader gc and pm
-if (isCmd) {
-await satria.sendPresenceUpdate('composing', m.chat)
-satria.sendReadReceipt(m.chat, m.sender, [m.key.id])}
 
         let bbk = "+212"
        if (bbk.includes(m.sender)) {
        	await satria.updateBlockStatus(m.sender, 'block').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
        }
   
-if(!isMedia) {
-	satria.sendReadReceipt(m.chat, m.sender, [m.key.id])
-	}
 	
 	var satgnz = "allhamdulilah"
 let isnoown = new RegExp(satgnz, 'i')
@@ -301,10 +294,7 @@ reactionMessage = {
                 
                 
         // Push Message To Console && Auto Read
-        if (m.message) {
-            satria.sendReadReceipt(m.chat, m.sender, [m.key.id])
-            console.log(chalk.black(chalk.bgWhite('[ PESAN ]')), chalk.black(chalk.bgGreen(new Date)), chalk.black(chalk.bgBlue(budy || m.mtype)) + '\n' + chalk.magenta('=> Dari'), chalk.green(pushname), chalk.yellow(m.sender) + '\n' + chalk.blueBright('=> Di'), chalk.green(m.isGroup ? pushname : 'Private Chat', m.chat))
-        }
+   
 	
 
 // Auto Read2
