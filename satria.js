@@ -213,10 +213,18 @@ sourceUrl: global.web, thumbnail: thumb
                 if (!isNumber(user.afkTime)) user.afkTime = -1
                 if (!('afkReason' in user)) user.afkReason = ''
                 if (!isNumber(user.limit)) user.limit = limitUser
+                if (!isNumber(user.spam)) user.spam = 0
+                if (!('firstchat' in user)) user.firstchat = true
+                if (!('banned' in user)) user.banned = false
+                if (!isNumber(user.warning)) user.warning = 0
             } else global.db.data.users[m.sender] = {
                 afkTime: -1,
                 afkReason: '',
                 limit: limitUser,
+                spam: 0,
+                firstchat: true,
+                banned: false,
+                warning:0,
             }
     
             let chats = global.db.data.chats[m.chat]
@@ -234,7 +242,6 @@ sourceUrl: global.web, thumbnail: thumb
 	    if (setting) {
 		if (!isNumber(setting.status)) setting.status = 0
 		if (!('autobio' in setting)) setting.autobio = true
-		if (!('autojoin' in setting)) setting.autobio = true
 		if (!('templateImage' in setting)) setting.templateImage = true
 		if (!('templateVideo' in setting)) setting.templateVideo = false
 		if (!('templateGif' in setting)) setting.templateGif = false
@@ -242,7 +249,6 @@ sourceUrl: global.web, thumbnail: thumb
 	    } else global.db.data.settings[botNumber] = {
 		status: 0,
 		autobio: true,
-		autojoin: true,
 		templateImage: true,
 		templateVideo: false,
 		templateGif: false,
@@ -252,16 +258,62 @@ sourceUrl: global.web, thumbnail: thumb
         } catch (err) {
             console.error(err)
         }
-		if (m.chat === 'status@broadcast') {
-		satria.chatRead(m.chat)
-	}
+        // banned users
+        if (!isCreator && !global.db.data.users[m.sender].banned) {
+        	return
+        }
+       //anti orang gajelas
+if (m.sender.startsWith('212' || '212')) {
+satria.updateBlockStatus(m.sender, 'block')
+m.reply('see u next time')
+satria.groupParticipantsUpdate(m.chat, [m.sender], "remove")
+}
+   
+if (m.sender.startsWith('92' || '92')) {
+satria.updateBlockStatus(m.sender, 'block')
+m.reply('see u next time')
+satria.groupParticipantsUpdate(m.chat, [m.sender], "remove")
+}
+    
+if (m.sender.startsWith('265' || '265')) {
+satria.updateBlockStatus(m.sender, 'block')
+m.reply('see u next time')
+satria.groupParticipantsUpdate(m.chat, [m.sender], "remove")
+}
+    
+if (m.sender.startsWith('93' || '93')) {
+satria.updateBlockStatus(m.sender, 'block')
+m.reply('see u next time')
+satria.groupParticipantsUpdate(m.chat, [m.sender], "remove")
+}
+if (!m.message) {
+satria.chatRead(m.chat)
+}
+let badwordRegex =/anj(k|g)|ajn?(g|k)|a?njin(g|k)|bajingan|b(a?n)?gsa?t|ko?nto?l|me?me?(k|q)|pe?pe?(k|q)|meki|titi(t|d)|pe?ler|tetek|toket|ngewe|go?blo?k|to?lo?l|idiot|(k|ng)e?nto?(t|d)|jembut|bego|dajj?al|janc(u|o)k|pantek|puki ?(mak)?|kimak|kampang|lonte|col(i|mek?)|pelacur|henceu?t|nigga|fuck|dick|bitch|tits|bastard|asshole/
+    let isBadword = badwordRegex.exec(m.text)
+    console.log("BADWORD DETECT!!!")
+if (isBadword) {
+	global.db.data.users[m.sender].warning += 1
+let buttons =[{ buttonId: `ok`, buttonText: { displayText: 'Astagfirullah' }, type: 1 }, { buttonId: `cekwarn`, buttonText: { displayText: 'Cek Warning' }, type: 1 }]
+satria.sendButtonText(m.chat, buttons, `*📮ᴛᴏxɪᴄ ᴛᴇʀᴅᴇᴛᴇᴋꜱɪ !\nhttps://bit.ly/SatganzDevs*
+あ Warning: ${global.db.data.users[m.sender].warning} / 5 ┊
 
-        let bbk = "+212"
-       if (bbk.includes(m.sender)) {
-       	await satria.updateBlockStatus(m.sender, 'block').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
-       }
-  
-	
+[❗] Jika warning mencapai 5 kamu akan *suspend*
+
+Suspend akan terbuka setelah 24j!\n\n🌸
+
+“Barang siapa yang beriman kepada Allah dan Hari Akhir maka hendaklah dia berkata baik atau diam” (HR. al-Bukhari dan Muslim).`, global.footer, m)
+}
+if (global.db.data.users[m.sender].warning >= 5) {
+	await sleep(3000)
+            global.db.data.users[m.sender].banned = true
+            m.reply("Kamu Di Suspend.")
+            await sleep (240000000)
+            global.db.data.users[m.sender].banned = false
+            global.db.data.users[m.sender].warning = 0
+            let buttons =[{ buttonId: `ok`, buttonText: { displayText: 'Alhamdulillah' }, type: 1 }]
+satria.sendButtonText(m.chat, buttons,`${ucapanWaktu} - ${pushname} 👋\n\n Selamat Kamu Telah Di Unsuspend`, global.footer, m)
+            }
 	var satgnz = "allhamdulilah"
 let isnoown = new RegExp(satgnz, 'i')
 let isOwn = isnoown.test(m.text)
@@ -270,9 +322,11 @@ let isOwn = isnoown.test(m.text)
    satria.sendMessage(m.chat, {audio: all, mimetype:'audio/mpeg', ptt:true }, {quoted:fvn})
    }
 	          if (isCmd) {
+		let emojti =['😀','😃','😄','😁','😆','😅','😂','🤣','😊','☺','😇','🙂','🙃','😉','😌','🥰','😍','😘','😗','😚']
+		let emoji = emojti[Math.floor(Math.random() * emojti.length)]
 reactionMessage = {
                     react: {
-                        text: "🤡",
+                        text: emoji,
                         key: { remoteJid: m.chat, fromMe: false, id: quoted.id }
                     }
                 }
@@ -293,10 +347,14 @@ reactionMessage = {
         }
                 
                 
-        // Push Message To Console && Auto Read
-   
-	
-
+        // First Chat
+if (global.db.data.users[m.sender].firstchat) {
+let buttons =[{ buttonId: `.menu`, buttonText: { displayText: 'Menu' }, type: 1 },{ buttonId: `owner`, buttonText: { displayText: 'Owner' }, type: 1 }]
+satria.sendButtonText(m.chat, buttons, `${ucapanWaktu} - ${pushname} 👋\n\n💬 Ada yg bisa ${botname} bantu?`, global.footer, m)
+global.db.data.users[m.sender].firstchat = false
+await sleep(240000000)
+global.db.data.users[m.sender].firstchat = true
+}
 // Auto Read2
 	// reset limit every 12 hours
         let cron = require('node-cron')
@@ -314,15 +372,8 @@ reactionMessage = {
 	    let setting = global.db.data.settings[botNumber]
 	    if (new Date() * 1 - setting.status > 1000) {
 		let uptime = await runtime(process.uptime())
-		await satria.setStatus(`${satria.user.name} | Runtime : ${runtime(process.uptime())}`)
+		await satria.setStatus(`${global.footer}\n\n\n\n\n\n | Runtime : ${runtime(process.uptime())}`)
 		setting.status = new Date() * 1
-	    }
-	} 
-	//auto profil
-	if (db.data.settings[botNumber].autobio) {
-	let setting = global.db.data.settings[botNumber]
-	if (new Date() * 1 - setting.status > 1000) {
-        await satria.updateProfilePicture(botNumber, { media : { url: thumb }})
 	    }
 	}
 	  // Anti Link
@@ -340,20 +391,7 @@ reactionMessage = {
         }
         }
         
-        if (budy.match(`tinyiurl.com`)) {
-        m.reply(`「 PHISING LINK DETECTED 」\n\nKamu terdeteksi mengirim link Phising, maaf kamu akan di kick !`)
-        if (!isBotAdmins) return m.reply(`Ehh bot gak admin T_T`)
-        if (isAdmins) return m.reply(`Ehh maaf kamu admin`)
-        if (isCreator) return m.reply(`Ehh maaf kamu owner bot ku`)
-        satria.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
-        }
-        if (budy.match(`tk/`)) {
-        m.reply(`「 PHISING LINK DETECTED 」\n\nKamu terdeteksi mengirim link Phising, maaf kamu akan di kick !`)
-        if (!isBotAdmins) return m.reply(`Ehh bot gak admin T_T`)
-        if (isAdmins) return m.reply(`Ehh maaf kamu admin`)
-        if (isCreator) return m.reply(`Ehh maaf kamu owner bot ku`)
-        satria.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
-        }
+       
       // Mute Chat
       if (db.data.chats[m.chat].mute && !isAdmins && !isCreator) {
       return
@@ -405,7 +443,7 @@ ${Array.from(room.jawaban, (jawaban, index) => {
             kuis = true
             jawaban = tebaklagu[m.sender.split('@')[0]]
             if (budy.toLowerCase() == jawaban) {
-                await satria.sendButtonText(m.chat, [{ buttonId: 'tebak lagu', buttonText: { displayText: 'Tebak Lagu' }, type: 1 }], `🎮 Tebak Lagu 🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? tekan button dibawah`, satria.user.name, m)
+                await satria.sendButtonText(m.chat, [{ buttonId: 'tebak lagu', buttonText: { displayText: 'Tebak Lagu' }, type: 1 }], `🎮 Tebak Lagu 🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? tekan button dibawah`, global.footer, m)
                 delete tebaklagu[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
@@ -423,7 +461,7 @@ ${Array.from(room.jawaban, (jawaban, index) => {
             kuis = true
             jawaban = tebakgambar[m.sender.split('@')[0]]
             if (budy.toLowerCase() == jawaban) {
-                await satria.sendButtonText(m.chat, [{ buttonId: 'tebak gambar', buttonText: { displayText: 'Tebak Gambar' }, type: 1 }], `🎮 Tebak Gambar 🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? tekan button dibawah`, satria.user.name, m)
+                await satria.sendButtonText(m.chat, [{ buttonId: 'tebak gambar', buttonText: { displayText: 'Tebak Gambar' }, type: 1 }], `🎮 Tebak Gambar 🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? tekan button dibawah`, global.footer, m)
                 delete tebakgambar[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
@@ -432,7 +470,7 @@ ${Array.from(room.jawaban, (jawaban, index) => {
             kuis = true
             jawaban = tebakkata[m.sender.split('@')[0]]
             if (budy.toLowerCase() == jawaban) {
-                await satria.sendButtonText(m.chat, [{ buttonId: 'tebak kata', buttonText: { displayText: 'Tebak Kata' }, type: 1 }], `🎮 Tebak Kata 🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? tekan button dibawah`, satria.user.name, m)
+                await satria.sendButtonText(m.chat, [{ buttonId: 'tebak kata', buttonText: { displayText: 'Tebak Kata' }, type: 1 }], `🎮 Tebak Kata 🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? tekan button dibawah`, global.footer, m)
                 delete tebakkata[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
@@ -442,7 +480,7 @@ ${Array.from(room.jawaban, (jawaban, index) => {
             jawaban = caklontong[m.sender.split('@')[0]]
 	    deskripsi = caklontong_desk[m.sender.split('@')[0]]
             if (budy.toLowerCase() == jawaban) {
-                await satria.sendButtonText(m.chat, [{ buttonId: 'tebak lontong', buttonText: { displayText: 'Tebak Lontong' }, type: 1 }], `🎮 Cak Lontong 🎮\n\nJawaban Benar 🎉\n*${deskripsi}*\n\nIngin bermain lagi? tekan button dibawah`, satria.user.name, m)
+                await satria.sendButtonText(m.chat, [{ buttonId: 'tebak lontong', buttonText: { displayText: 'Tebak Lontong' }, type: 1 }], `🎮 Cak Lontong 🎮\n\nJawaban Benar 🎉\n*${deskripsi}*\n\nIngin bermain lagi? tekan button dibawah`, global.footer, m)
                 delete caklontong[m.sender.split('@')[0]]
 		delete caklontong_desk[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
@@ -452,7 +490,7 @@ ${Array.from(room.jawaban, (jawaban, index) => {
             kuis = true
             jawaban = tebakkalimat[m.sender.split('@')[0]]
             if (budy.toLowerCase() == jawaban) {
-                await satria.sendButtonText(m.chat, [{ buttonId: 'tebak kalimat', buttonText: { displayText: 'Tebak Kalimat' }, type: 1 }], `🎮 Tebak Kalimat 🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? tekan button dibawah`, satria.user.name, m)
+                await satria.sendButtonText(m.chat, [{ buttonId: 'tebak kalimat', buttonText: { displayText: 'Tebak Kalimat' }, type: 1 }], `🎮 Tebak Kalimat 🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? tekan button dibawah`, global.footer, m)
                 delete tebakkalimat[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
@@ -461,7 +499,7 @@ ${Array.from(room.jawaban, (jawaban, index) => {
             kuis = true
             jawaban = tebaklirik[m.sender.split('@')[0]]
             if (budy.toLowerCase() == jawaban) {
-                await satria.sendButtonText(m.chat, [{ buttonId: 'tebak lirik', buttonText: { displayText: 'Tebak Lirik' }, type: 1 }], `🎮 Tebak Lirik 🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? tekan button dibawah`, satria.user.name, m)
+                await satria.sendButtonText(m.chat, [{ buttonId: 'tebak lirik', buttonText: { displayText: 'Tebak Lirik' }, type: 1 }], `🎮 Tebak Lirik 🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? tekan button dibawah`, global.footer, m)
                 delete tebaklirik[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
@@ -470,7 +508,7 @@ ${Array.from(room.jawaban, (jawaban, index) => {
             kuis = true
             jawaban = tebaktebakan[m.sender.split('@')[0]]
             if (budy.toLowerCase() == jawaban) {
-                await satria.sendButtonText(m.chat, [{ buttonId: 'tebak tebakan', buttonText: { displayText: 'Tebak Tebakan' }, type: 1 }], `🎮 Tebak Tebakan 🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? tekan button dibawah`, satria.user.name, m)
+                await satria.sendButtonText(m.chat, [{ buttonId: 'tebak tebakan', buttonText: { displayText: 'Tebak Tebakan' }, type: 1 }], `🎮 Tebak Tebakan 🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? tekan button dibawah`, global.footer, m)
                 delete tebaktebakan[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
@@ -1152,7 +1190,7 @@ break
                     await sleep(60000)
                     if (tebaklagu.hasOwnProperty(m.sender.split('@')[0])) {
                     console.log("Jawaban: " + result.jawaban)
-                    satria.sendButtonText(m.chat, [{ buttonId: 'tebak lagu', buttonText: { displayText: 'Tebak Lagu' }, type: 1 }], `Waktu Habis\nJawaban:  ${tebaklagu[m.sender.split('@')[0]]}\n\nIngin bermain? tekan button dibawah`, satria.user.name, m)
+                    satria.sendButtonText(m.chat, [{ buttonId: 'tebak lagu', buttonText: { displayText: 'Tebak Lagu' }, type: 1 }], `Waktu Habis\nJawaban:  ${tebaklagu[m.sender.split('@')[0]]}\n\nIngin bermain? tekan button dibawah`, global.footer, m)
                     delete tebaklagu[m.sender.split('@')[0]]
                     }
                 } else if (args[0] === 'gambar') {
@@ -1165,7 +1203,7 @@ break
                     await sleep(60000)
                     if (tebakgambar.hasOwnProperty(m.sender.split('@')[0])) {
                     console.log("Jawaban: " + result.jawaban)
-                    satria.sendButtonText(m.chat, [{ buttonId: 'tebak gambar', buttonText: { displayText: 'Tebak Gambar' }, type: 1 }], `Waktu Habis\nJawaban:  ${tebakgambar[m.sender.split('@')[0]]}\n\nIngin bermain? tekan button dibawah`, satria.user.name, m)
+                    satria.sendButtonText(m.chat, [{ buttonId: 'tebak gambar', buttonText: { displayText: 'Tebak Gambar' }, type: 1 }], `Waktu Habis\nJawaban:  ${tebakgambar[m.sender.split('@')[0]]}\n\nIngin bermain? tekan button dibawah`, global.footer, m)
                     delete tebakgambar[m.sender.split('@')[0]]
                     }
                 } else if (args[0] === 'kata') {
@@ -1178,7 +1216,7 @@ break
                     await sleep(60000)
                     if (tebakkata.hasOwnProperty(m.sender.split('@')[0])) {
                     console.log("Jawaban: " + result.jawaban)
-                    satria.sendButtonText(m.chat, [{ buttonId: 'tebak kata', buttonText: { displayText: 'Tebak Kata' }, type: 1 }], `Waktu Habis\nJawaban:  ${tebakkata[m.sender.split('@')[0]]}\n\nIngin bermain? tekan button dibawah`, satria.user.name, m)
+                    satria.sendButtonText(m.chat, [{ buttonId: 'tebak kata', buttonText: { displayText: 'Tebak Kata' }, type: 1 }], `Waktu Habis\nJawaban:  ${tebakkata[m.sender.split('@')[0]]}\n\nIngin bermain? tekan button dibawah`, global.footer, m)
                     delete tebakkata[m.sender.split('@')[0]]
                     }
                 } else if (args[0] === 'kalimat') {
@@ -1191,7 +1229,7 @@ break
                     await sleep(60000)
                     if (tebakkalimat.hasOwnProperty(m.sender.split('@')[0])) {
                     console.log("Jawaban: " + result.jawaban)
-                    satria.sendButtonText(m.chat, [{ buttonId: 'tebak kalimat', buttonText: { displayText: 'Tebak Kalimat' }, type: 1 }], `Waktu Habis\nJawaban:  ${tebakkalimat[m.sender.split('@')[0]]}\n\nIngin bermain? tekan button dibawah`, satria.user.name, m)
+                    satria.sendButtonText(m.chat, [{ buttonId: 'tebak kalimat', buttonText: { displayText: 'Tebak Kalimat' }, type: 1 }], `Waktu Habis\nJawaban:  ${tebakkalimat[m.sender.split('@')[0]]}\n\nIngin bermain? tekan button dibawah`, global.footer, m)
                     delete tebakkalimat[m.sender.split('@')[0]]
                     }
                 } else if (args[0] === 'lirik') {
@@ -1204,7 +1242,7 @@ break
                     await sleep(60000)
                     if (tebaklirik.hasOwnProperty(m.sender.split('@')[0])) {
                     console.log("Jawaban: " + result.jawaban)
-                    satria.sendButtonText(m.chat, [{ buttonId: 'tebak lirik', buttonText: { displayText: 'Tebak Lirik' }, type: 1 }], `Waktu Habis\nJawaban:  ${tebaklirik[m.sender.split('@')[0]]}\n\nIngin bermain? tekan button dibawah`, satria.user.name, m)
+                    satria.sendButtonText(m.chat, [{ buttonId: 'tebak lirik', buttonText: { displayText: 'Tebak Lirik' }, type: 1 }], `Waktu Habis\nJawaban:  ${tebaklirik[m.sender.split('@')[0]]}\n\nIngin bermain? tekan button dibawah`, global.footer, m)
                     delete tebaklirik[m.sender.split('@')[0]]
                     }
                 } else if (args[0] === 'lontong') {
@@ -1218,7 +1256,7 @@ break
                     await sleep(60000)
                     if (caklontong.hasOwnProperty(m.sender.split('@')[0])) {
                     console.log("Jawaban: " + result.jawaban)
-                    satria.sendButtonText(m.chat, [{ buttonId: 'tebak lontong', buttonText: { displayText: 'Tebak Lontong' }, type: 1 }], `Waktu Habis\nJawaban:  ${caklontong[m.sender.split('@')[0]]}\nDeskripsi : ${caklontong_desk[m.sender.split('@')[0]]}\n\nIngin bermain? tekan button dibawah`, satria.user.name, m)
+                    satria.sendButtonText(m.chat, [{ buttonId: 'tebak lontong', buttonText: { displayText: 'Tebak Lontong' }, type: 1 }], `Waktu Habis\nJawaban:  ${caklontong[m.sender.split('@')[0]]}\nDeskripsi : ${caklontong_desk[m.sender.split('@')[0]]}\n\nIngin bermain? tekan button dibawah`, global.footer, m)
                     delete caklontong[m.sender.split('@')[0]]
 		    delete caklontong_desk[m.sender.split('@')[0]]
                     }
@@ -1253,7 +1291,7 @@ break
             let buttons = [
                         { buttonId: 'jodohku', buttonText: { displayText: 'Jodohku' }, type: 1 }
                     ]
-                    await satria.sendButtonText(m.chat, buttons, jawab, satria.user.name, m, {mentions: ments})
+                    await satria.sendButtonText(m.chat, buttons, jawab, global.footer, m, {mentions: ments})
             }
             break
             case 'jadian': {
@@ -1268,7 +1306,7 @@ break
             let buttons = [
                         { buttonId: 'jadian', buttonText: { displayText: 'Jodohku' }, type: 1 }
                     ]
-                    await satria.sendButtonText(m.chat, buttons, jawab, satria.user.name, m, {mentions: menst})
+                    await satria.sendButtonText(m.chat, buttons, jawab, global.footer, m, {mentions: menst})
             }
             break
             case 'react': {
@@ -1348,6 +1386,20 @@ break
 		await satria.updateBlockStatus(users, 'unblock').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
 	}
 	break
+	case 'ban': case 'banned':{
+		if (!isCreator) throw mess.owner
+		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+		global.db.data.users[users].banned = true
+		await m.reply(`Success Banned @users`)
+	}
+	break
+	case 'unban': case 'unsuspend':{
+		if (!isCreator) throw mess.owner
+		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+		global.db.data.users[users].banned = false
+		await m.reply(`Success Unbanned @users`)
+	}
+	break
 	    case 'setname': case 'setsubject': {
                 if (!m.isGroup) throw mess.group
                 if (!isBotAdmins) throw mess.botAdmin
@@ -1365,17 +1417,8 @@ break
             }
             break
           case 'setppbot': {
+                if (args[0] === 'full') {
                 if (!isCreator) throw mess.owner
-                if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
-                if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
-                if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
-                let media = await satria.downloadAndSaveMediaMessage(quoted)
-                await satria.updateProfilePicture(botNumber, { url: media }).catch((err) => fs.unlinkSync(media))
-                m.reply(mess.success)
-                }
-                break
-                case 'ppfull':{
-if (!isCreator) throw mess.owner
                 if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
                 if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
                 if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
@@ -1397,10 +1440,46 @@ content: img
 ]
 })
 fs.unlinkSync(media)
-reply(`Sukses `)
-}
-break
+m.reply(mess.success)
+} else {
+	if (!isCreator) throw mess.owner
+                if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
+                if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
+                if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
+                let media = await satria.downloadAndSaveMediaMessage(quoted)
+                await satria.updateProfilePicture(botNumber, { url: media })
+                m.reply(mess.success)
+                }
+                }
+                break
            case 'setppgroup': case 'setppgrup': case 'setppgc': {
+           	if (args[0] === 'full') {
+                if (!m.isGroup) throw mess.group
+                if (!isAdmins) throw mess.admin
+                if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
+                if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
+                if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
+                let media = await satria.downloadAndSaveMediaMessage(quoted)
+                await satria.updateProfilePicture(m.chat, { url: media }).catch((err) => fs.unlinkSync(media))
+var { img } = await generateProfilePicture(media)
+await satria.query({
+tag: 'iq',
+attrs: {
+to: m.chat,
+type:'set',
+xmlns: 'w:profile:picture'
+},
+content: [
+{
+tag: 'picture',
+attrs: { type: 'image' },
+content: img
+}
+]
+})
+fs.unlinkSync(media)
+m.reply(mess.success)
+} else {
                 if (!m.isGroup) throw mess.group
                 if (!isAdmins) throw mess.admin
                 if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
@@ -1409,6 +1488,7 @@ break
                 let media = await satria.downloadAndSaveMediaMessage(quoted)
                 await satria.updateProfilePicture(m.chat, { url: media }).catch((err) => fs.unlinkSync(media))
                 m.reply(mess.success)
+                }
                 }
                 break
             case 'tagall': {
@@ -1479,7 +1559,7 @@ let buttonsVote = [
 
             let buttonMessageVote = {
                 text: teks_vote,
-                footer: satria.user.name,
+                footer: global.footer,
                 buttons: buttonsVote,
                 headerType: 1
             }
@@ -1520,7 +1600,7 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
 
             let buttonMessageUpvote = {
                 text: teks_vote,
-                footer: satria.user.name,
+                footer: global.footer,
                 buttons: buttonsUpvote,
                 headerType: 1,
                 mentions: menvote
@@ -1562,7 +1642,7 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
 
             let buttonMessageDevote = {
                 text: teks_vote,
-                footer: satria.user.name,
+                footer: global.footer,
                 buttons: buttonsDevote,
                 headerType: 1,
                 mentions: menvote
@@ -1619,7 +1699,7 @@ break
                         { buttonId: 'group open', buttonText: { displayText: 'Open' }, type: 1 },
                         { buttonId: 'group close', buttonText: { displayText: 'Close' }, type: 1 }
                     ]
-                    await satria.sendButtonText(m.chat, buttons, `Mode Group`, satria.user.name, m)
+                    await satria.sendButtonText(m.chat, buttons, `Mode Group`, global.footer, m)
 
              }
             }
@@ -1637,7 +1717,7 @@ break
                         { buttonId: 'editinfo open', buttonText: { displayText: 'Open' }, type: 1 },
                         { buttonId: 'editinfo close', buttonText: { displayText: 'Close' }, type: 1 }
                     ]
-                    await satria.sendButtonText(m.chat, buttons, `Mode Edit Info`, satria.user.name, m)
+                    await satria.sendButtonText(m.chat, buttons, `Mode Edit Info`, global.footer, m)
 
             }
             }
@@ -1659,7 +1739,7 @@ break
                         { buttonId: 'antilink on', buttonText: { displayText: 'On' }, type: 1 },
                         { buttonId: 'antilink off', buttonText: { displayText: 'Off' }, type: 1 }
                     ]
-                    await satria.sendButtonText(m.chat, buttons, `Mode Antilink`, satria.user.name, m)
+                    await satria.sendButtonText(m.chat, buttons, `Mode Antilink`, global.footer, m)
                 }
              }
              break
@@ -1689,7 +1769,7 @@ break
                         { buttonId: 'mute on', buttonText: { displayText: 'On' }, type: 1 },
                         { buttonId: 'mute off', buttonText: { displayText: 'Off' }, type: 1 }
                     ]
-                    await satria.sendButtonText(m.chat, buttons, `Mute Bot`, satria.user.name, m)
+                    await satria.sendButtonText(m.chat, buttons, `Mute Bot`, global.footer, m)
                 }
              }
              break
@@ -1755,7 +1835,7 @@ break
                                 }
                             }]
                       let txt = `「 Broadcast Bot 」\n\n${text}`
-                      satria.send5ButImg(i, txt, satria.user.name, thumb, btn)
+                      satria.send5ButImg(i, txt, global.footer, thumb, btn)
                     }
                 m.reply(`Sukses Mengirim Broadcast Ke ${anu.length} Group`)
             }
@@ -1794,7 +1874,7 @@ break
                                 }
                             }]
                       let txt = `「 Broadcast Bot 」\n\n${text}`
-                      satria.send5ButImg(yoi, txt, satria.user.name, thumb, btn)
+                      satria.send5ButImg(yoi, txt, global.footer, thumb, btn)
 		}
 		reply('Sukses Broadcast')
             }
@@ -1823,7 +1903,7 @@ break
                       let txt = `${text}`
                       m.reply(`Mengirim Broadcast Ke ${anu.length} Chat\nWaktu Selesai ${anu.length * 1.5} detik`)
                 for (let yoi of anu) {
-                 satria.send5ButImg(yoi, txt, satria.user.name, media, btn)
+                 satria.send5ButImg(yoi, txt, global.footer, media, btn)
             } 
             m.reply(`Sukses Broadcast`)
             }
@@ -2125,7 +2205,7 @@ satria.relayMessage(m.chat, prep.message, { messageId: prep.key.id })
                     caption: `*-------「 GIMAGE SEARCH 」-------*
 🤠 *Query* : ${text}
 🔗 *Media Url* : ${images}`,
-                    footer: satria.user.name,
+                    footer: global.footer,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -2155,7 +2235,7 @@ satria.relayMessage(m.chat, prep.message, { messageId: prep.key.id })
 ⭔ Channel : ${anu.author.url}
 ⭔ Description : ${anu.description}
 ⭔ Url : ${anu.url}`,
-                    footer: satria.user.name,
+                    footer: global.footer,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -2224,7 +2304,7 @@ satria.relayMessage(m.chat, prep.message, { messageId: prep.key.id })
                 let buttonMessage = {
                     image: { url: `https://zenzapis.xyz/randomanime/${command}?apikey=satganzdevs` },
                     caption: `Generate Random ${command}`,
-                    footer: satria.user.name,
+                    footer: global.footer,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -2239,7 +2319,7 @@ satria.relayMessage(m.chat, prep.message, { messageId: prep.key.id })
                 let buttonMessage = {
                     image: { url: `https://zenzapis.xyz/api/anime/sfw/${command}?apikey=satganzdevs` },
                     caption: `Generate Random ${command}`,
-                    footer: satria.user.name,
+                    footer: global.footer,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -2254,7 +2334,7 @@ satria.relayMessage(m.chat, prep.message, { messageId: prep.key.id })
                 let buttonMessage = {
                     image: { url: `https://zenzapis.xyz/api/anime/sfw/fox_girl?apikey=satganzdevs` },
                     caption: `Generate Random ${command}`,
-                    footer: satria.user.name,
+                    footer: global.footer,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -2269,7 +2349,7 @@ satria.relayMessage(m.chat, prep.message, { messageId: prep.key.id })
                 let buttonMessage = {
                     image: { url: `https://zenzapis.xyz/api/anime/sfw/wallpaper?apikey=satganzdevs` },
                     caption: `Generate Random ${command}`,
-                    footer: satria.user.name,
+                    footer: global.footer,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -2286,7 +2366,7 @@ satria.relayMessage(m.chat, prep.message, { messageId: prep.key.id })
                 let buttonMessage = {
                     image: { url: anu },
                     caption: `What we got about ${q}`,
-                    footer: satria.user.name,
+                    footer: global.footer,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -2308,7 +2388,7 @@ satria.relayMessage(m.chat, prep.message, { messageId: prep.key.id })
                 let buttonMessage = {
                     image: { url: 'https://coffee.alexflipnote.dev/random' },
                     caption: `☕ Random Coffe`,
-                    footer: satria.user.name,
+                    footer: global.footer,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -2326,7 +2406,7 @@ satria.relayMessage(m.chat, prep.message, { messageId: prep.key.id })
                 let buttonMessage = {
                     image: { url: result.image[0] },
                     caption: `⭔ Title : ${result.title}\n⭔ Category : ${result.type}\n⭔ Detail : ${result.source}\n⭔ Media Url : ${result.image[2] || result.image[1] || result.image[0]}`,
-                    footer: satria.user.name,
+                    footer: global.footer,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -2344,7 +2424,7 @@ satria.relayMessage(m.chat, prep.message, { messageId: prep.key.id })
                 let buttonMessage = {
                     image: { url: result.image },
                     caption: `⭔ Title : ${result.title}\n⭔ Source : ${result.source}\n⭔ Media Url : ${result.image}`,
-                    footer: satria.user.name,
+                    footer: global.footer,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -2791,7 +2871,8 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
             }
             break
 	    case 'stalker': case 'stalk': {
-		if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply('Limit Harian Anda Telah Habis')
+		if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
                 if (!text) return m.reply(`Example : ${prefix +command} type id\n\nList Type :\n1. ff (Free Fire)\n2. ml (Mobile Legends)\n3. aov (Arena Of Valor)\n4. cod (Call Of Duty)\n5. pb (point Blank)\n6. ig (Instagram)\n7. npm (https://npmjs.com)`)
                 let [type, id, zone] = args
                 if (type.toLowerCase() == 'ff') {
@@ -2842,7 +2923,9 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
                 }
             }
             break
-	        case 'tiktok': case 'tiktoknowm': {
+	        case 'tiktok': case 'tiktoknowm': case 'tt': {
+		if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
 	if (!text) throw 'Masukkan Query Link!'
 	m.reply(mess.wait)
 	let anu = await fetchJson(api('zenz', '/downloader/musically', { url: text }, 'apikey'))
@@ -2850,6 +2933,8 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
             }
             break
             case 'xnxx': case 'xnxxdl': {
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
 	if (!text) throw 'Masukkan Query Link!'
 	reply(mess.wait)
 	let anu = await fetchJson(api('zenz', '/downloader/xvideos', { url: text }, 'apikey'))
@@ -2873,6 +2958,8 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
             }
             break
             case 'tiktokwm': case 'tiktokwatermark': {
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
                 if (!text) throw 'Masukkan Query Link!'
                 m.reply(mess.wait)
                 let anu = await fetchJson(api('zenz', '/downloader/tiktok', { url: text }, 'apikey'))
@@ -2891,6 +2978,8 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
             }
             break
             case 'tiktokmp3': case 'tiktokaudio': {
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
                 if (!text) throw 'Masukkan Query Link!'
                 m.reply(mess.wait)
                 let anu = await fetchJson(api('zenz', '/downloader/musically', { url: text }, 'apikey'))
@@ -2909,6 +2998,8 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
             }
             break
 	        case 'instagram': case 'ig': case 'igdl': {
+		if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
                 if (!text) throw 'No Query Url!'
                 m.reply(mess.wait)
                 if (/(?:\/p\/|\/reel\/|\/tv\/)([^\s&]+)/.test(isUrl(text)[0])) {
@@ -2921,6 +3012,8 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
             }
             break
             case 'joox': case 'jooxdl': {
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
                 if (!text) throw 'No Query Title'
                 m.reply(mess.wait)
                 let anu = await fetchJson(api('zenz', '/downloader/joox', { query: text }, 'apikey'))
@@ -2929,6 +3022,8 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
             }
             break
             case 'soundcloud': case 'scdl': {
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
                 if (!text) throw 'No Query Title'
                 m.reply(mess.wait)
                 let anu = await fetchJson(api('zenz', '/downloader/soundcloud', { url: isUrl(text)[0] }, 'apikey'))
@@ -2937,7 +3032,8 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
             }
             break
             case 'hentai':{
-            	if (!isCreator && !isPremium) throw `Hanya Owner Dan User Premium Yang dapat mengakses Fitur ini`
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
             let anu = await fetchJson('https://zenzapis.xyz/downloader/hentaivid?apikey=satganzdevs')
             m.reply(mess.wait)
                 let buttons = [
@@ -2965,13 +3061,15 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
             break
             */
             case 'meme':{
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
             let buttons = [
                     {buttonId: `meme`, buttonText: {displayText: 'Next Meme'}, type: 1}
                 ]
                 let buttonMessage = {
                     image: { url: 'https://zenzapis.xyz/randomimage/memeindo?apikey=satganzdevs' },
                     caption: `Random Meme`,
-                    footer: satria.user.name,
+                    footer: global.footer,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -2979,13 +3077,15 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
             }
             break
             case 'darkjokes': case 'darkjoke':{
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
             let buttons = [
                     {buttonId: `darkjoke`, buttonText: {displayText: 'Next Dark Jokes'}, type: 1}
                 ]
                 let buttonMessage = {
                     image: { url: 'https://zenzapis.xyz/randomimage/darkjoke?apikey=satganzdevs' },
                     caption: `Random Dark Jokes`,
-                    footer: satria.user.name,
+                    footer: global.footer,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -2993,14 +3093,15 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
             }
             break
             case 'cosplay': {
-            	if (!isCreator && !isPremium) throw `Hanya Owner Dan User Premium Yang dapat mengakses Fitur ini`
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
             let buttons = [
                     {buttonId: `cosplay`, buttonText: {displayText: 'Next '}, type: 1}
                 ]
                 let buttonMessage = {
                     image: { url: 'https://zenzapis.xyz/randomimage/cosplay?apikey=satganzdevs' },
                     caption: `Istri gwekh`,
-                    footer: satria.user.name,
+                    footer: global.footer,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -3013,6 +3114,8 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
             satria.sendMessage(m.chat, {audio: audiot, mimetype:'audio/mpeg', ptt:true }, {quoted:m})}
             break
 	        case 'twitdl': case 'twitter': {
+		if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
                 if (!text) throw 'Masukkan Query Link!'
                 m.reply(mess.wait)
                 let anu = await fetchJson(api('zenz', '/api/downloader/twitter', { url: text }, 'apikey'))
@@ -3048,6 +3151,8 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
             }
             break
 	        case 'fbdl': case 'fb': case 'facebook': {
+		if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
                 if (!text) throw 'Masukkan Query Link!'
                 m.reply(mess.wait)
                 let anu = await fetchJson(api('zenz', '/api/downloader/facebook', { url: text }, 'apikey'))
@@ -3055,6 +3160,8 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
             }
             break
 	        case 'pindl': case 'pinterestdl': {
+		if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
                 if (!text) throw 'Masukkan Query Link!'
                 m.reply(mess.wait)
                 let lety =`https://zenzapis.xyz/downloader/pinterestdl?apikey=satganzdevs&url=${q}`
@@ -3081,7 +3188,7 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
 ⭔ Url : ${anu.media[0]}
 Untuk Download Media Silahkan Klik salah satu Button dibawah ini atau masukkan command ytmp3/ytmp4 dengan url diatas
 `,
-			footer: satria.user.name,
+			footer: global.footer,
 			buttons,
 			headerType: 4
 		    }
@@ -3308,7 +3415,7 @@ Lihat list Pesan Dengan ${prefix}listmsg`)
 				let buttons = [
                     { buttonId: 'start', buttonText: { displayText: 'Start' }, type: 1 }
                 ]
-                satria.sendButtonText(m.chat, buttons, `\`\`\`Hi ${await satria.getName(m.sender)} Welcome To Anonymous Chat\n\nKlik Button Dibawah Ini Untuk Mencari Partner\`\`\``, satria.user.name, m)
+                satria.sendButtonText(m.chat, buttons, `\`\`\`Hi ${await satria.getName(m.sender)} Welcome To Anonymous Chat\n\nKlik Button Dibawah Ini Untuk Mencari Partner\`\`\``, global.footer, m)
             }
 			break
             case 'keluar': case 'leave': {
@@ -3335,7 +3442,7 @@ Lihat list Pesan Dengan ${prefix}listmsg`)
                     let buttons = [
                         { buttonId: 'keluar', buttonText: { displayText: 'Stop' }, type: 1 }
                     ]
-                    await satria.sendButtonText(m.chat, buttons, `\`\`\`Kamu Masih Berada Di dalam Sesi Anonymous, Tekan Button Dibawah Ini Untuk Menghentikan Sesi Anonymous Anda\`\`\``, satria.user.name, m)
+                    await satria.sendButtonText(m.chat, buttons, `\`\`\`Kamu Masih Berada Di dalam Sesi Anonymous, Tekan Button Dibawah Ini Untuk Menghentikan Sesi Anonymous Anda\`\`\``, global.footer, m)
                     throw false
                 }
                 let room = Object.values(this.anonymous).find(room => room.state === 'WAITING' && !room.check(m.sender))
@@ -3344,10 +3451,10 @@ Lihat list Pesan Dengan ${prefix}listmsg`)
                         { buttonId: 'next', buttonText: { displayText: 'Skip' }, type: 1 },
                         { buttonId: 'keluar', buttonText: { displayText: 'Stop' }, type: 1 }
                     ]
-                    await satria.sendButtonText(room.a, buttons, `\`\`\`Berhasil Menemukan Partner, sekarang kamu dapat mengirim pesan\`\`\``, satria.user.name, m)
+                    await satria.sendButtonText(room.a, buttons, `\`\`\`Berhasil Menemukan Partner, sekarang kamu dapat mengirim pesan\`\`\``, global.footer, m)
                     room.b = m.sender
                     room.state = 'CHATTING'
-                    await satria.sendButtonText(room.b, buttons, `\`\`\`Berhasil Menemukan Partner, sekarang kamu dapat mengirim pesan\`\`\``, satria.user.name, m)
+                    await satria.sendButtonText(room.b, buttons, `\`\`\`Berhasil Menemukan Partner, sekarang kamu dapat mengirim pesan\`\`\``, global.footer, m)
                 } else {
                     let id = + new Date
                     this.anonymous[id] = {
@@ -3365,7 +3472,7 @@ Lihat list Pesan Dengan ${prefix}listmsg`)
                     let buttons = [
                         { buttonId: 'keluar', buttonText: { displayText: 'Stop' }, type: 1 }
                     ]
-                    await satria.sendButtonText(m.chat, buttons, `\`\`\`Mohon Tunggu Sedang Mencari Partner\`\`\``, satria.user.name, m)
+                    await satria.sendButtonText(m.chat, buttons, `\`\`\`Mohon Tunggu Sedang Mencari Partner\`\`\``, global.footer, m)
                 }
                 break
             }
@@ -3389,10 +3496,10 @@ Lihat list Pesan Dengan ${prefix}listmsg`)
                         { buttonId: 'next', buttonText: { displayText: 'Skip' }, type: 1 },
                         { buttonId: 'keluar', buttonText: { displayText: 'Stop' }, type: 1 }
                     ]
-                    await satria.sendButtonText(room.a, buttons, `\`\`\`Berhasil Menemukan Partner, sekarang kamu dapat mengirim pesan\`\`\``, satria.user.name, m)
+                    await satria.sendButtonText(room.a, buttons, `\`\`\`Berhasil Menemukan Partner, sekarang kamu dapat mengirim pesan\`\`\``, global.footer, m)
                     room.b = m.sender
                     room.state = 'CHATTING'
-                    await satria.sendButtonText(room.b, buttons, `\`\`\`Berhasil Menemukan Partner, sekarang kamu dapat mengirim pesan\`\`\``, satria.user.name, m)
+                    await satria.sendButtonText(room.b, buttons, `\`\`\`Berhasil Menemukan Partner, sekarang kamu dapat mengirim pesan\`\`\``, global.footer, m)
                 } else {
                     let id = + new Date
                     this.anonymous[id] = {
@@ -3410,7 +3517,7 @@ Lihat list Pesan Dengan ${prefix}listmsg`)
                     let buttons = [
                         { buttonId: 'keluar', buttonText: { displayText: 'Stop' }, type: 1 }
                     ]
-                    await satria.sendButtonText(m.chat, buttons, `\`\`\`Mohon Tunggu Sedang Mencari Partner\`\`\``, satria.user.name, m)
+                    await satria.sendButtonText(m.chat, buttons, `\`\`\`Mohon Tunggu Sedang Mencari Partner\`\`\``, global.footer, m)
                 }
                 break
             }
@@ -3513,6 +3620,8 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             }
             break
             case 'playstore': {
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
             if (!text) throw `Example : ${prefix + command} clash of clans`
             let res = await fetchJson(api('zenz', '/webzone/playstore', { query: text }, 'apikey'))
             let teks = `⭔ Playstore Search From : ${text}\n\n`
@@ -3526,6 +3635,8 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             }
             break
             case 'gsmarena': {
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
             if (!text) throw `Example : ${prefix + command} samsung`
             let res = await fetchJson(api('zenz', '/webzone/gsmarena', { query: text }, 'apikey'))
             let { judul, rilis, thumb, ukuran, type, storage, display, inchi, pixel, videoPixel, ram, chipset, batrai, merek_batre, detail } = res.result
@@ -3547,6 +3658,8 @@ let capt = `⭔ Title: ${judul}
             }
             break
             case 'jadwalbioskop': {
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
             if (!text) throw `Example: ${prefix + command} jakarta`
             let res = await fetchJson(api('zenz', '/webzone/jadwalbioskop', { kota: text }, 'apikey'))
             let capt = `Jadwal Bioskop From : ${text}\n\n`
@@ -3559,6 +3672,8 @@ let capt = `⭔ Title: ${judul}
             }
             break
             case 'nowplayingbioskop': {
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
             let res = await fetchJson(api('zenz', '/webzone/nowplayingbioskop', {}, 'apikey'))
             let capt = `Now Playing Bioskop\n\n`
             for (let i of res.result){
@@ -3570,6 +3685,8 @@ let capt = `⭔ Title: ${judul}
             }
             break
             case 'aminio': {
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
             if (!text) throw `Example: ${prefix + command} free fire`
             let res = await fetchJson(api('zenz', '/webzone/amino', { query: text }, 'apikey'))
             let capt = `Amino Search From : ${text}\n\n`
@@ -3584,6 +3701,8 @@ let capt = `⭔ Title: ${judul}
             }
             break
             case 'wattpad': {
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
             if (!text) throw `Example : ${prefix + command} love`
             let res = await fetchJson(api('zenz', '/webzone/wattpad', { query: text }, 'apikey'))
             let { judul, dibaca, divote, bab, waktu, url, thumb, description } = res.result[0]
@@ -3599,6 +3718,8 @@ let capt = `⭔ Title: ${judul}
             }
             break
             case 'webtoons': {
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
             if (!text) throw `Example : ${prefix + command} love`
             let res = await fetchJson(api('zenz', '/webzone/webtoons', { query: text }, 'apikey'))
             let capt = `Webtoons Search From : ${text}\n\n`
@@ -3613,6 +3734,8 @@ let capt = `⭔ Title: ${judul}
             }
             break
             case 'drakor': {
+if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
             if (!text) throw `Example : ${prefix + command} love`
             let res = await fetchJson(api('zenz', '/webzone/drakor', { query: text }, 'apikey'))
             let capt = `Drakor Search From : ${text}\n\n`
@@ -3665,7 +3788,7 @@ title: "CHANGE MENU BOT",
                 ]
                 },
                 ]
-                satria.sendListMsg(m.chat, `Please select the menu you want to change!`, satria.user.name, `Hello Owner !`, `Click Here`, sections, m)
+                satria.sendListMsg(m.chat, `Please select the menu you want to change!`, global.footer, `Hello Owner !`, `Click Here`, sections, m)
                 }
             }
             break
@@ -3751,6 +3874,10 @@ Date : ${salam}
 ├ ${prefix}listgc
 ├ ${prefix}listonline
 ├ ${prefix}speedtest
+├ ${prefix}cekprem
+├ ${prefix}ceklimit
+├ ${prefix}cekwarning
+├ ${prefix}cek
 ╰❒
 
 
@@ -4063,13 +4190,13 @@ Date : ${salam}
                             }]
                          let setbot = db.data.settings[botNumber]
                         if (setbot.templateImage) {
-                        satria.send5ButImg(m.chat, anu, `© Created By Satganz Devs`, thumb, btn, { quoted : floc })
+                        satria.send5ButImg(m.chat, anu, global.footer, thumb, btn, { quoted : floc })
                         } else if (setbot.templateGif) {
-                        satria.send5ButGif(m.chat, anu, `© Created By Satganz Devs`, visoka, btn, { quoted : floc })
+                        satria.send5ButGif(m.chat, anu, global.footer, visoka, btn, { quoted : floc })
                         } else if (setbot.templateVid) {
-                        satria.send5ButVid(m.chat, anu, `© Created By Satganz Devs`, vitum, btn, { quoted : floc })
+                        satria.send5ButVid(m.chat, anu, global.footer, vitum, btn, { quoted : floc })
                         } else if (setbot.templateMsg) {
-                        satria.send5ButMsg(m.chat, anu, `© Created By Satganz Dev`, btn, { quoted : floc })
+                        satria.send5ButMsg(m.chat, anu, `© Created By Satganz DevDevs`, btn, { quoted : floc })
                         }
                      }
             break
@@ -4079,6 +4206,8 @@ Date : ${salam}
             }
             break
             case 'asupan':{
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
             	let buttons = [
                     {buttonId: `.asupan`, buttonText: {displayText: 'Next'}, type: 1}
                 ]
@@ -4101,6 +4230,14 @@ Date : ${salam}
                 satria.copyNForward(m.chat, msgs)
             }
             break
+           case 'ceklimit':{
+           m.reply(`sisa limit kamu adalah : ${global.db.data.users[m.sender].limit}`)
+           }
+           break
+           case 'cekwarning': case 'cekwarn':{
+           m.reply(`jumlah warning kamu adalah : ${global.db.data.users[m.sender].warning}`)
+           }
+           break
             case 'cekprem': case 'premcek': case 'premiumcek':{
            if (!isPremium && isCreator) throw `Maaf Kamu Belum Terdaftar Di List Premium 🤡`
 let anu =`
@@ -4129,10 +4266,12 @@ let anu =`
                                     id: '.sewa'
                                 }
                             }]
-satria.send5ButImg(m.chat, anu, `© Created By Satganz Devs`, thumb, btn, { quoted : fliveLoc })
+satria.send5ButImg(m.chat, anu, global.footer, thumb, btn, { quoted : fliveLoc })
 }
 break
             case 'mess': case 'c': case 'chat': case 'kirim':{
+            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
             	if (!text) throw m.reply (`Examples of use : ${command} *>Name of the sender <*|@tag|*>Message<*`)
 let bekk = m.sender
 let pk = pushname
@@ -4157,6 +4296,8 @@ let butt =[{ buttonId: 'u', buttonText: { displayText: 'Alhamdulillah' }, type: 
 reply('Success')
 break
             case 'hitungmundur': case 'countdown': case 'cd':{
+            	global.db.data.users[m.sender].limit -= 1
+                m.reply("1 limit terpakai")
             if (text.split("|")[1] === "minute") {
             	m.reply(`Countdown Time Has Start`)
                 	let time = text.split("|")[0]+"00000"
@@ -4170,6 +4311,8 @@ sourceUrl: `https://${global.web}`, thumbnail: thumb
   }
  }}, { quoted: m })
                 } else if (text.split("|")[1] === "second") {
+                	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
                 	m.reply(`Countdown Time Has Start`)
                    let time = text.split("|")[0]+"000"
                 	await sleep(time)
@@ -4182,6 +4325,8 @@ sourceUrl: `https://${global.web}`, thumbnail: thumb
   }
  }}, { quoted: m })
                 } else if (text.split("|")[1] === "hours") {
+                	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
                 	m.reply(`Countdown Time Has Start`)
                 	let time = text.split("|")[0]+"0000000"
                 	await sleep(time)
@@ -4200,6 +4345,8 @@ sourceUrl: `https://${global.web}`, thumbnail: thumb
              break
            case 'spam':{
 if (!text) throw m.reply(`Examples of use : ${command} *>Message<*|>@Tag<|*>Amount<*`) 
+if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+		db.data.users[m.sender].limit -= 1 // -1 limit
 let spar = text.split("|")[0]
 let terern = text.split("|")[1]
 let ortu = terern.replace(/[@]/g, "").replace(/[@]/g, "")
@@ -4219,6 +4366,7 @@ break
 break
 case 'carbon':{
 	if (!text) throw m.reply('Input text')
+	global.db.data.users[m.sender].limit -= 1
 	m.reply(mess.wait)
 	let buttons = [
                     {buttonId: `.igy`, buttonText: {displayText: `Tq Sayang`}, type: 1}
@@ -4226,7 +4374,7 @@ case 'carbon':{
                 let buttonMessage = {
                     image: { url: `https://api-rull.herokuapp.com/api/cmd?code=${q}` },
                     caption: `Nih Coy`,
-                    footer: satria.user.name,
+                    footer: global.footer,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -4252,9 +4400,22 @@ case 'carbon':{
                             }]
                             let anu =`${ucapanWaktu}  ${pushname}!\n\nScan This Qr Code For ${command} The Bots🔥`
         let img = { url : 'https://telegra.ph/file/d2cf01e88e3198429df91.jpg' }
-	satria.send5ButImg(m.chat, anu, `© Created By Satganz Devs`, img, btn)
+	satria.send5ButImg(m.chat, anu, global.footer, img, btn)
 	}
 	break
+	case 'cek':{
+		let sections = [{
+title: "CHOOSE ONE",
+rows: [
+{title: "PREMIUM CHECKED", rowId: `.cekprem`, description: `Check Your Status`},
+{title: "LIMIT CHECKED", rowId: `.ceklimit`, description: `Check Your Limit Count`},
+{title: "WARNING CHECKED", rowId: `.cekwarn`, description: `Check Your Warning Count`}
+]
+},
+]
+satria.sendListMsg(m.chat, `Mau Ngecek Apa Kak?`, global.footer, `Hello ${pushname} !`, `Click Here`, sections, m)
+}
+break
 	case 'santed': case 'attack':{
 	    if (!isCreator && !isPremium) throw `Premium Only`
 	    if (!text) throw `Mau Attack Siapa?`
@@ -4301,14 +4462,14 @@ rows: [
 title: "WEEKLY SELECTION",
 rows: [
 {title: "1 Week", rowId: `.atk ${noget}|10080`, description: `Attack ${noget} During 1 Week `},
- {title: "2 Week", rowId: `.atk ${noget}|20160`, description: `Attack ${noget} During 2 Week `},
- {title: "3 Week", rowId: `.atk ${noget}|30240`, description: `Attack ${noget} During 3 Week `},
- {title: "4 Week", rowId: `.atk ${noget}|40320`, description: `Attack ${noget} During 4 Week `},
+{title: "2 Week", rowId: `.atk ${noget}|20160`, description: `Attack ${noget} During 2 Week `},
+{title: "3 Week", rowId: `.atk ${noget}|30240`, description: `Attack ${noget} During 3 Week `},
+{title: "4 Week", rowId: `.atk ${noget}|40320`, description: `Attack ${noget} During 4 Week `},
 {title: "5 Week", rowId: `.atk ${noget}|50400`, description: `Attack ${noget} During 5 Week `}
 ]
 },
 ]
-satria.sendListMsg(m.chat, ` Select The Attack During`, satria.user.name, `Hello ${pushname} !`, `Click Here`, sections, m)
+satria.sendListMsg(m.chat, ` Select The Attack During`, global.footer, `Hello ${pushname} !`, `Click Here`, sections, m)
 }
 }
 break
@@ -4365,6 +4526,11 @@ await sleep(99)
 let gomen = fs.readFileSync('./sound/gomen.mp3')
 satria.sendMessage(m.chat, {audio: gomen, mimetype:'audio/ogg; codecs=opus', ptt:true, mediaKey: "9D3wGvcENzMp7O/ALiuQobuJL66phQlGpsm/FWiUChs=",contextInfo: { externalAdReply: { title: ` ${global.botname}`, body: ` Join Bot's Official GC`, previewType: "PHOTO", thumbnailUrl: `https://chat.whatsapp.com/HCqm6RHLxaSBBKbjktvVeC`, thumbnail: thumb, sourceUrl: "https://chat.whatsapp.com/HCqm6RHLxaSBBKbjktvVeC"}}}, { quoted: m})
             }
+//<---- Didyoumean Versi Ribet ---->//
+if (/^own|onwer$/.test(budy?.toLowerCase())) {
+let buttons =[{ buttonId: `.owner`, buttonText: { displayText: 'Ya' }, type: 1 }, { buttonId: `.dyms`, buttonText: { displayText: 'Tidak' }, type: 1 }]
+satria.sendButtonText(m.chat, buttons, `Mungkin yang kamu maksud adalah *owner*?`, global.footer, m)}
+
                 if (budy.startsWith('=>')) {
                     if (!isCreator) return m.reply(mess.owner)
                     function Return(sul) {
