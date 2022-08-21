@@ -216,6 +216,7 @@ sourceUrl: global.web, thumbnail: thumb
                 if (!isNumber(user.spam)) user.spam = 0
                 if (!('firstchat' in user)) user.firstchat = true
                 if (!('banned' in user)) user.banned = false
+                if (!('textbanned' in user)) user.textbanned = true
                 if (!isNumber(user.warning)) user.warning = 0
             } else global.db.data.users[m.sender] = {
                 afkTime: -1,
@@ -259,9 +260,8 @@ sourceUrl: global.web, thumbnail: thumb
             console.error(err)
         }
         // banned users
-        if (!isCreator && !global.db.data.users[m.sender].banned) {
-        	return
-        }
+        if (!isCreator && global.db.data.users[m.sender].banned) return
+        
        //anti orang gajelas
 if (m.sender.startsWith('212' || '212')) {
 satria.updateBlockStatus(m.sender, 'block')
@@ -291,7 +291,7 @@ satria.chatRead(m.chat)
 }
 let badwordRegex =/anj(k|g)|ajn?(g|k)|a?njin(g|k)|bajingan|b(a?n)?gsa?t|ko?nto?l|me?me?(k|q)|pe?pe?(k|q)|meki|titi(t|d)|pe?ler|tetek|toket|ngewe|go?blo?k|to?lo?l|idiot|(k|ng)e?nto?(t|d)|jembut|bego|dajj?al|janc(u|o)k|pantek|puki ?(mak)?|kimak|kampang|lonte|col(i|mek?)|pelacur|henceu?t|nigga|fuck|dick|bitch|tits|bastard|asshole/
     let isBadword = badwordRegex.exec(m.text)
-    console.log("BADWORD DETECT!!!")
+    console.log('BADWORD DETECT!!!')
 if (isBadword) {
 	global.db.data.users[m.sender].warning += 1
 let buttons =[{ buttonId: `ok`, buttonText: { displayText: 'Astagfirullah' }, type: 1 }, { buttonId: `cekwarn`, buttonText: { displayText: 'Cek Warning' }, type: 1 }]
@@ -304,15 +304,16 @@ Suspend akan terbuka setelah 24j!\n\n🌸
 
 “Barang siapa yang beriman kepada Allah dan Hari Akhir maka hendaklah dia berkata baik atau diam” (HR. al-Bukhari dan Muslim).`, global.footer, m)
 }
-if (global.db.data.users[m.sender].warning >= 5) {
-	await sleep(3000)
+if (global.db.data.users[m.sender].textbanned && global.db.data.users[m.sender].warning >= 5) {
             global.db.data.users[m.sender].banned = true
-            m.reply("Kamu Di Suspend.")
-            await sleep (240000000)
-            global.db.data.users[m.sender].banned = false
+            let butns =[{ buttonId: `ok`, buttonText: { displayText: 'Oke :)' }, type: 1 }]
+satria.sendButtonText(m.chat, butns,`${ucapanWaktu} - ${pushname} 👋\n\n Maaf Akun Kamu Di Banned.`, global.footer, m)
+global.db.data.users[m.sender].textbanned = false
+            await sleep (120000000)
             global.db.data.users[m.sender].warning = 0
+            global.db.data.users[m.sender].banned = false
             let buttons =[{ buttonId: `ok`, buttonText: { displayText: 'Alhamdulillah' }, type: 1 }]
-satria.sendButtonText(m.chat, buttons,`${ucapanWaktu} - ${pushname} 👋\n\n Selamat Kamu Telah Di Unsuspend`, global.footer, m)
+satria.sendButtonText(m.chat, buttons,`${ucapanWaktu} - ${pushname} 👋\n\n Selamat Kamu Telah Di Unbanned`, global.footer, m)
             }
 	var satgnz = "allhamdulilah"
 let isnoown = new RegExp(satgnz, 'i')
@@ -352,8 +353,9 @@ if (global.db.data.users[m.sender].firstchat) {
 let buttons =[{ buttonId: `.menu`, buttonText: { displayText: 'Menu' }, type: 1 },{ buttonId: `owner`, buttonText: { displayText: 'Owner' }, type: 1 }]
 satria.sendButtonText(m.chat, buttons, `${ucapanWaktu} - ${pushname} 👋\n\n💬 Ada yg bisa ${botname} bantu?`, global.footer, m)
 global.db.data.users[m.sender].firstchat = false
-await sleep(240000000)
+await sleep(120000000)
 global.db.data.users[m.sender].firstchat = true
+console.log('new user detect, sending first chat...')
 }
 // Auto Read2
 	// reset limit every 12 hours
@@ -372,7 +374,7 @@ global.db.data.users[m.sender].firstchat = true
 	    let setting = global.db.data.settings[botNumber]
 	    if (new Date() * 1 - setting.status > 1000) {
 		let uptime = await runtime(process.uptime())
-		await satria.setStatus(`${global.footer}\n\n\n\n\n\n | Runtime : ${runtime(process.uptime())}`)
+		await satria.setStatus(`⏳Runtime : ${runtime(process.uptime())} | ${global.footer}`)
 		setting.status = new Date() * 1
 	    }
 	}
