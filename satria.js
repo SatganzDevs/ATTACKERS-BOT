@@ -1,7 +1,7 @@
 /**
-   * Base By Dika Ardnt.
+   * https://bit.ly/SatganzDevs
    * Recode full by Satganz Devs
-   * Follow https://github.com/SatzzBotzz
+   * Follow https://github.com/SatganzDevs
 */
 
 require('./settings/config')
@@ -14,7 +14,7 @@ const axios = require('axios')
 const path = require('path')
 const os = require('os')
 const moment = require('moment-timezone')
-const { JSDOfdoc } = require('jsdom')
+const { JSDOfgclink } = require('jsdom')
 const speed = require('performance-now')
 const { performance } = require('perf_hooks')
 const { Primbon } = require('scrape-primbon')
@@ -53,9 +53,29 @@ module.exports = satria = async (satria, m, chatUpdate, store) => {
         const quoted = m.quoted ? m.quoted : m
         const mime = (quoted.msg || quoted).mimetype || ''
         const isMedia = /image|video|sticker|audio/.test(mime)
+        var kont = ["application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.presentationml.presentation", "application/msword", "application/pdf"]
+	    var kontol = kont[Math.floor(Math.random() * kont.length)]
         const tagss = m.sender.replace(/[@s.whatsapnet]/g, "").replace(/[@S.WHATSAPNET]/g, "")
         const tagsender = "@"+tagss
-const vitum= { url : global.visoka }
+        const bulol = [{
+urlButton: {
+displayText: 'Website',
+url: global.web
+}
+},{
+quickReplyButton: {
+displayText: 'Status Bot',
+id: '.ping'
+}
+}, {
+quickReplyButton: {
+displayText: 'Rent Bots',
+id: '.sewa'
+}
+}]
+const reply = (teks) => {
+            satria.sendMessage(m.chat, { text: teks, contextInfo:{"externalAdReply": {"title": ` ${global.botnma}`,"body": ` Join Bot's Official GC`, "previewType": "PHOTO","thumbnailUrl": ``,"thumbnail": fs.readFileSync(`./media/satria.jpg`),"sourceUrl": "https://chat.whatsapp.com/E14rIyYMuovIfkskhi5QN9"}}}, { quoted: m})
+        }
         // Group
         const groupMetadata = m.isGroup ? await satria.groupMetadata(m.chat).catch(e => {}) : ''
         const groupName = m.isGroup ? groupMetadata.subject : ''
@@ -63,7 +83,7 @@ const vitum= { url : global.visoka }
         const groupAdmins = m.isGroup ? await getGroupAdmins(participants) : ''
     	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
     	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
-    	const isPremium = isCreator || global.premium.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || false
+    	const isPremium = isCreator || global.db.data.users[m.sender].premium || false
     const ftroli ={key: {fromMe: false,"participant":"0@s.whatsapp.net", "remoteJid": "6289523258649-1604595598@g.us"}, "message": {orderMessage: {itemCount: 99999999,status: 200, thumbnail: thumb, surface: 200, message: `© ${global.ownername}`, orderTitle: 'Satganz Devs', sellerJid: '6281316701742@s.whatsapp.net'}}, contextInfo: {"forwardingScore":999,"isForwarded":true},sendEphemeral: true}
 		const fvn = {key: {participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: "6289643739077-1613049930@g.us" } : {})},message: { "audioMessage": {"mimetype":"audio/ogg; codecs=opus","seconds":100000000000,"ptt": "true"}} } 
 		const fgif = {key: {participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: "status@broadcast" } : {})},message: {"videoMessage": { "title":`© ${global.ownername}`, "h": `satria`,'seconds': '359996400', 'gifPlayback': 'true', 'caption': `© ${global.ownername}`, 'jpegthumbnail': thumb}}}
@@ -96,7 +116,8 @@ title: 'Satganz Devs',
                       }
 		const fvideo = {key: { fromMe: false,participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: "6289643739077-1613049930@g.us" } : {}) },message: { "videoMessage": { "title":`${pushname}`, "h": `Hmm`,'seconds': '359996400', 'caption': `${pushname}`, 'jpegthumbnail': thumb}}}
 		const floc = {key : {participant : '6281316701742@s.whatsapp.net'},message: {locationMessage: {name: `${ownername}`,jpegthumbnail: thumb}}}
-		const fkontak = { key: {participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: `6283136505591-1614953337@g.us` } : {}) }, message: { 'contactMessage': { 'displayName': `${pushname}`, 'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:XL;${pushname},;;;\nFN:${pushname},\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`, 'jpegthumbnail': thumb, thumbnail: thumb,sendEphemeral: true}}}
+		const fkontak = { key: {participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: `6283136505591-1614953337@g.us` } : {}) }, message: { 'contactMessage': { 'displayName': `Unknown People`, 'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:XL;${pushname},;;;\nFN:${pushname},\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`, 'jpegthumbnail': thumb, thumbnail: thumb,sendEphemeral: true}}}
+		const fsend = { key: {participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: `6283136505591-1614953337@g.us` } : {}) }, message: { 'contactMessage': { 'displayName': `Anonymous`, 'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:XL;${pushname},;;;\nFN:${pushname},\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`, 'jpegthumbnail': thumb, thumbnail: thumb,sendEphemeral: true}}}
 		const ftoko = {
        key: {
                    fromMe: false,
@@ -152,7 +173,7 @@ title: 'Satganz Devs',
            }
 		
 		const virus =  {
-             key: { fromMe: false,remoteJid: "satria@broadcast", participant: '0@s.whatsapp.net'}, message: {orderMessage: {itemCount: 2021, status: 200, thumbnail: thumb, surface: 200, message: '1955', orderTitle: 'hehe', sellerJid: '0@s.whatsapp.net'} } }       
+             key: { fromMe: false,remoteJid: "status@broadcast", participant: '0@s.whatsapp.net'}, message: {orderMessage: {itemCount: 2021, status: 200, thumbnail: thumb, surface: 200, message: '1955', orderTitle: 'hehe', sellerJid: '0@s.whatsapp.net'} } }       
      const serang = (teks) => {
            satria.sendMessage(`${teks}@s.whatsapp.net`, { text: teks, contextInfo:{"externalAdReply": {"title": ` hehe`,"body": ` hehe`, "previewType": "PHOTO","thumbnailUrl": `https://wa.me/6281316701742`,"thumbnail": thumb,"sourceUrl": "hehe"}}}, { quoted: virus})
            }
@@ -160,8 +181,8 @@ title: 'Satganz Devs',
 	const freply = async (teks) => {
 			return await satria.sendMessage(m.chat,teks,`Kontol`, pushname,ownername, m)
 		}
-		const randomArr = (arr = []) => {
-            return arr[Math.floor(Math.random() * arr.length)]
+		const pickrandom = (pr = []) => {
+            return pr[Math.floor(Math.random() * pr.length)]
 	       }
 	const ply = async(teks) => {
       await satria.sendMessage(m.chat, { contextInfo: { externalAdReply: {showAdAttribution: true, title: `Hallo ${pushname}`, body: `satria`, previewType: 'PHOTO', thumbnail: thumb, sourceUrl:`https://s.satria.repl.co`}}, text: teks, mentions: parseMention(teks)}, {quoted: floc})
@@ -194,7 +215,7 @@ title: 'Satganz Devs',
         var ucapanWaktu = ucapan.tmalam
 }
             
-            const reply = (teks) => {satria.sendMessage(m.chat, { text: teks, externalAdReply: { showAdAttribution: true,
+            const balas = (teks) => {satria.sendMessage(m.chat, { text: teks, externalAdReply: { showAdAttribution: true,
 mediaType:  1,
 mediaUrl: 'https://wa.me/6281316701742',
 title: '「 ❔ 」',
@@ -212,17 +233,16 @@ sourceUrl: global.web, thumbnail: thumb
             if (user) {
                 if (!isNumber(user.afkTime)) user.afkTime = -1
                 if (!('afkReason' in user)) user.afkReason = ''
+                if (!('premium' in user)) user.premium = false
                 if (!isNumber(user.limit)) user.limit = limitUser
-                if (!isNumber(user.spam)) user.spam = 0
                 if (!('firstchat' in user)) user.firstchat = true
                 if (!('banned' in user)) user.banned = false
-                if (!('textbanned' in user)) user.textbanned = true
                 if (!isNumber(user.warning)) user.warning = 0
             } else global.db.data.users[m.sender] = {
                 afkTime: -1,
                 afkReason: '',
+                premium: false,
                 limit: limitUser,
-                spam: 0,
                 firstchat: true,
                 banned: false,
                 warning:0,
@@ -232,10 +252,14 @@ sourceUrl: global.web, thumbnail: thumb
             if (typeof chats !== 'object') global.db.data.chats[m.chat] = {}
             if (chats) {
                 if (!('mute' in chats)) chats.mute = false
+                if (!('antitoxic' in chats)) chats.antitoxic = false
                 if (!('antilink' in chats)) chats.antilink = false
+                if (!('antiviewonce' in chats)) chats.antiviewonce = false
             } else global.db.data.chats[m.chat] = {
                 mute: false,
+                antitoxic: false,
                 antilink: false,
+                antiviewonce: false,
             }
 		
 	    let setting = global.db.data.settings[botNumber]
@@ -258,6 +282,11 @@ sourceUrl: global.web, thumbnail: thumb
 	    
         } catch (err) {
             console.error(err)
+        }
+// Push Message To Console && Auto Read
+        if (m.message) {
+            satria.readMessages([m.key])
+            console.log(chalk.black(chalk.bgWhite('[ PESAN ]')), chalk.black(chalk.bgGreen(new Date)), chalk.black(chalk.bgBlue(budy || m.mtype)) + '\n' + chalk.magenta('=> Dari'), chalk.green(pushname), chalk.yellow(m.sender) + '\n' + chalk.blueBright('=> Di'), chalk.green(m.isGroup ? pushname : 'Private Chat', m.chat))
         }
         // banned users
         if (!isCreator && global.db.data.users[m.sender].banned) return
@@ -291,30 +320,38 @@ satria.chatRead(m.chat)
 }
 let badwordRegex =/anj(k|g)|ajn?(g|k)|a?njin(g|k)|bajingan|b(a?n)?gsa?t|ko?nto?l|me?me?(k|q)|pe?pe?(k|q)|meki|titi(t|d)|pe?ler|tetek|toket|ngewe|go?blo?k|to?lo?l|idiot|(k|ng)e?nto?(t|d)|jembut|bego|dajj?al|janc(u|o)k|pantek|puki ?(mak)?|kimak|kampang|lonte|col(i|mek?)|pelacur|henceu?t|nigga|fuck|dick|bitch|tits|bastard|asshole/
     let isBadword = badwordRegex.exec(m.text)
-    console.log('BADWORD DETECT!!!')
-if (isBadword) {
-	global.db.data.users[m.sender].warning += 1
-let buttons =[{ buttonId: `ok`, buttonText: { displayText: 'Astagfirullah' }, type: 1 }, { buttonId: `cekwarn`, buttonText: { displayText: 'Cek Warning' }, type: 1 }]
-satria.sendButtonText(m.chat, buttons, `*📮ᴛᴏxɪᴄ ᴛᴇʀᴅᴇᴛᴇᴋꜱɪ !\nhttps://bit.ly/SatganzDevs*
-あ Warning: ${global.db.data.users[m.sender].warning} / 5 ┊
+    if (global.db.data.chats[m.chat].antitoxic) {
+if (!isBadword) {
+    	global.db.data.users[m.sender].warn += 1
+    	let buttons = [{ buttonId: `.astagfirullah`, buttonText: { displayText: `AstagFirullah` }, type: 1 },{ buttonId: `.antitoxic off`, buttonText: { displayText: `Off AntiBadword` }, type: 1 }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: "*_BADWORD DETECT_*",
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: `*!ANTIBADWORD*
+あ Warning: ${global.db.data.users[m.sender].warn} / 5 ┊
 
-[❗] Jika warning mencapai 5 kamu akan *suspend*
+[❗] Jika warning mencapai 5 kamu akan *di kick*\n\n🌸
 
-Suspend akan terbuka setelah 24j!\n\n🌸
-
-“Barang siapa yang beriman kepada Allah dan Hari Akhir maka hendaklah dia berkata baik atau diam” (HR. al-Bukhari dan Muslim).`, global.footer, m)
-}
-if (global.db.data.users[m.sender].textbanned && global.db.data.users[m.sender].warning >= 5) {
-            global.db.data.users[m.sender].banned = true
-            let butns =[{ buttonId: `ok`, buttonText: { displayText: 'Oke :)' }, type: 1 }]
-satria.sendButtonText(m.chat, butns,`${ucapanWaktu} - ${pushname} 👋\n\n Maaf Akun Kamu Di Banned.`, global.footer, m)
-global.db.data.users[m.sender].textbanned = false
-            await sleep (120000000)
-            global.db.data.users[m.sender].warning = 0
-            global.db.data.users[m.sender].banned = false
-            let buttons =[{ buttonId: `ok`, buttonText: { displayText: 'Alhamdulillah' }, type: 1 }]
-satria.sendButtonText(m.chat, buttons,`${ucapanWaktu} - ${pushname} 👋\n\n Selamat Kamu Telah Di Unbanned`, global.footer, m)
-            }
+“Barang siapa yang beriman kepada Allah dan Hari Akhir maka hendaklah dia berkata baik atau diam” (HR. al-Bukhari dan Muslim).`,
+            footer: footer,
+            mentions: [m.sender],
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
+    }
+    }
+             // Read waring }
+        if (global.db.data.users[m.sender].warning >= 5 && !isGroup) {
+        	global.db.data.users[m.sender].warning = 0
+        m.reply("maaf kamu akan di kick karena warning kamu telah mencapai limit")
+        await satria.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
+       }
 	var satgnz = "allhamdulilah"
 let isnoown = new RegExp(satgnz, 'i')
 let isOwn = isnoown.test(m.text)
@@ -322,7 +359,7 @@ let isOwn = isnoown.test(m.text)
 		let all = {url : "https://a.uguu.se/ahGderba.mp3"}
    satria.sendMessage(m.chat, {audio: all, mimetype:'audio/mpeg', ptt:true }, {quoted:fvn})
    }
-	          if (isCmd) {
+	          /* if (isCmd) {
 		let emojti =['😀','😃','😄','😁','😆','😅','😂','🤣','😊','☺','😇','🙂','🙃','😉','😌','🥰','😍','😘','😗','😚']
 		let emoji = emojti[Math.floor(Math.random() * emojti.length)]
 reactionMessage = {
@@ -333,30 +370,48 @@ reactionMessage = {
                 }
                 satria.sendMessage(m.chat, reactionMessage)
             }
+            */
             
             if (/^a(s|ss)alamu('|)alaikum$/.test(budy?.toLowerCase())) {
-            const jawab_salam = [
+            const jawab_salam = pr = [
                 'Wa\'alaikumusalam',
                 'Wa\'alaikumusalam wrb',
                 'Wa\'alaikumusalam Warohmatulahi Wabarokatuh',
             ]
-            satria.sendMessage(m.chat, {audio: { url : "https://a.uguu.se/qvmYuAMt.mp3" }, mimetype:'audio/mpeg', ptt:true }, {quoted:ftoko})
+            m.reply(jawab_salam)
         }
         // Public & Self
         if (!satria.public) {
             if (!m.key.fromMe) return
         }
+        if (global.db.data.users[m.sender].banned >= true && !isCreator) {
+          	return
+             }
                 
                 
         // First Chat
-if (global.db.data.users[m.sender].firstchat) {
-let buttons =[{ buttonId: `.menu`, buttonText: { displayText: 'Menu' }, type: 1 },{ buttonId: `owner`, buttonText: { displayText: 'Owner' }, type: 1 }]
-satria.sendButtonText(m.chat, buttons, `${ucapanWaktu} - ${pushname} 👋\n\n💬 Ada yg bisa ${botname} bantu?`, global.footer, m)
-global.db.data.users[m.sender].firstchat = false
-await sleep(120000000)
-global.db.data.users[m.sender].firstchat = true
-console.log('new user detect, sending first chat...')
-}
+if (m.chat.endsWith('@s.whatsapp.net') && global.db.data.users[m.sender].firstchat) {
+	const buttons = [
+        { buttonId: `.owner`, buttonText: { displayText: `Owner` }, type: 1 },
+        { buttonId: `.menu`, buttonText: { displayText: `Menu` }, type: 1 }
+        ]
+        const buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: footer,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: `💬 Hai Kak @${m.sender.split('@')[0]}\n\nSaya ${botname}, ada yang Bisa Saya Bantu?`,
+            footer: footer,
+            buttons: buttons,
+            headerType: 4
+        }
+
+       satria.sendMessage(m.chat, buttonMessage, { m, ephemeralExpiration: 86400, contextInfo: { mentionedJid: m.sender }})
+       global.db.data.users[m.sender].firstchat = false
+    }
 // Auto Read2
 	// reset limit every 12 hours
         let cron = require('node-cron')
@@ -364,17 +419,18 @@ console.log('new user detect, sending first chat...')
             let user = Object.keys(global.db.data.users)
             let limitUser = isPremium ? global.limitawal.premium : global.limitawal.free
             for (let jid of user) global.db.data.users[jid].limit = limitUser
+            global.db.data.users[jid].firstchat = false
             console.log('Reseted Limit')
         }, {
             scheduled: true,
             timezone: "Asia/Jakarta"
         })
 	// auto set bio
-	if (db.data.settings[botNumber].autobio) {
+ if (db.data.settings[botNumber].autobio) {
 	    let setting = global.db.data.settings[botNumber]
 	    if (new Date() * 1 - setting.status > 1000) {
 		let uptime = await runtime(process.uptime())
-		await satria.setStatus(`⏳Runtime : ${runtime(process.uptime())} | ${global.footer}`)
+		await satria.setStatus(`⏳Runtime : ${runtime(process.uptime())} | Mode : ${satria.public ? 'Public' : 'Self'}`)
 		setting.status = new Date() * 1
 	    }
 	}
@@ -393,6 +449,22 @@ console.log('new user detect, sending first chat...')
         }
         }
         
+        if (db.data.chats[m.chat].antiviewonce) {
+            if (m.mtype == 'viewOnceMessage') {
+        let msg = m.message.viewOnceMessage.message
+        let type = Object.keys(msg)[0]
+        let media = await downloadContentFromMessage(msg[type], type == 'imageMessage' ? 'image' : 'video')
+        let buffer = Buffer.from([])
+        for await (const chunk of media) {
+            buffer = Buffer.concat([buffer, chunk])
+        }
+        if (/video/.test(type)) {
+            return satria.sendFile(m.chat, buffer, 'media.mp4', msg[type].caption || 'Anti viewOnce', m)
+        } else if (/image/.test(type)) {
+            return satria.sendFile(m.chat, buffer, 'media.jpg', msg[type].caption || 'Anti viewOnce', m)
+        }
+       }
+    }
        
       // Mute Chat
       if (db.data.chats[m.chat].mute && !isAdmins && !isCreator) {
@@ -789,31 +861,10 @@ Silahkan @${m.mentionedJid[0].split`@`[0]} untuk ketik terima/tolak`
             }
             }
             break
-            case 'sc': {
-                let arr = []
-for (let i = 0; i < 999; i++) arr.push({ productId: '5027155267411425' }) 
-	let prep = generateWAMessageFromContent(m.chat, {
-	listMessage: {
-		title: 'Script Bot', description: ucapanWaktu,
-		buttonText: 'Buy', listType: 2,
-		sections: [], productListInfo: {
-			productSections: [{ title: 'github: SatzzBotzz', products: arr }],
-			headerImage: {
-				productId: '5027155267411425', jpegThumbnail: thumb
-			},
-			businessOwnerJid: '6281316701742@s.whatsapp.net'
-		},
-		footerText: botname,
-		contextInfo: null 
-	}
-}, {})
-
-satria.relayMessage(m.chat, prep.message, { messageId: prep.key.id })
-}
-            break
+         
 
 case 'mn1': {
-freplyy(`╭─❒ 「 Group Menu 」
+anu=`╭─❒ 「 Group Menu 」
  ├ ${prefix}linkgroup
  ├ ${prefix}ephemeral [option]
  ├ ${prefix}setppgc [image]
@@ -835,11 +886,47 @@ freplyy(`╭─❒ 「 Group Menu 」
  ├ ${prefix}upvote
  ├ ${prefix}cekvote
  ├ ${prefix}hapusvote
- ╰❒`)
+ ╰❒`
+ let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: anu,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
 case 'mn2': {
-freplyy(` ╭─❒ 「 Main Menu 」
+let anu =`╭─❒ 「 Main Menu 」
  ├ ${prefix}ping
  ├ ${prefix}request
  ├ ${prefix}report
@@ -853,11 +940,47 @@ freplyy(` ╭─❒ 「 Main Menu 」
  ├ ${prefix}listgc
  ├ ${prefix}listonline
  ├ ${prefix}speedtest
- ╰❒`)
+ ╰❒`
+ let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: anu,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
 case 'mn3': {
-freplyy(` ╭─❒ 「 Owner Menu 」
+let anu =`╭─❒ 「 Owner Menu 」
  ├ ${prefix}react [emoji]
  ├ ${prefix}chat [option]
  ├ ${prefix}join [link]
@@ -869,11 +992,47 @@ freplyy(` ╭─❒ 「 Owner Menu 」
  ├ ${prefix}setppbot [image]
  ├ ${prefix}setexif
  ├ ${prefix}setmenu [option]
- ╰❒`)
+ ╰❒`
+ let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: anu,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
 case 'mn4': {
-freplyy(` ╭─❒ 「 Webzone Menu 」
+let anu =`╭─❒ 「 Webzone Menu 」
  ├ ${prefix}playstore
  ├ ${prefix}gsmarena
  ├ ${prefix}jadwalbioskop
@@ -882,11 +1041,47 @@ freplyy(` ╭─❒ 「 Webzone Menu 」
  ├ ${prefix}wattpad
  ├ ${prefix}webtoons
  ├ ${prefix}drakor
- ╰❒`)
+ ╰❒`
+ let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: anu,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
 case 'mn5': {
-freplyy(` ╭─❒ 「 Downloader Menu 」
+let anu =`╭─❒ 「 Downloader Menu 」
  ├ ${prefix}tiktoknowm [url]
  ├ ${prefix}tiktokwm [url]
  ├ ${prefix}tiktokmp3 [url]
@@ -902,11 +1097,47 @@ freplyy(` ╭─❒ 「 Downloader Menu 」
  ├ ${prefix}umma [url]
  ├ ${prefix}joox [query]
  ├ ${prefix}soundcloud [url]
- ╰❒`)
+ ╰❒`
+ let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: "kontol",
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage, m)
 }
 break
 case 'mn6': {
-freplyy(` ╭─❒ 「 Search Menu 」
+let anu =`╭─❒ 「 Search Menu 」
  ├ ${prefix}play [query]
  ├ ${prefix}yts [query]
  ├ ${prefix}google [query]
@@ -917,11 +1148,47 @@ freplyy(` ╭─❒ 「 Search Menu 」
  ├ ${prefix}ytsearch [query]
  ├ ${prefix}ringtone [query]
  ├ ${prefix}stalk [option] [query]
- ╰❒`)
+ ╰❒`
+ let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: anu,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
 case 'mn7': {
-freplyy(` ╭─❒ 「 Random Menu 」
+let anu =`╭─❒ 「 Random Menu 」
  ├ ${prefix}chat
  ├ ${prefix}stopwatch
  ├ ${prefix}nekopoi
@@ -943,11 +1210,47 @@ freplyy(` ╭─❒ 「 Random Menu 」
  ├ ${prefix}nekos (nsfw)
  ├ ${prefix}trap (nsfw)
  ├ ${prefix}blowjob (nsfw)
- ╰❒`)
+ ╰❒`
+ let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: anu,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
 case 'mn8': {
-freplyy(` ╭─❒ 「 Textpro Menu 」
+let anu =`╭─❒ 「 Textpro Menu 」
  ├ ${prefix}3dchristmas
  ├ ${prefix}3ddeepsea
  ├ ${prefix}americanflag
@@ -979,28 +1282,100 @@ freplyy(` ╭─❒ 「 Textpro Menu 」
  ├ ${prefix}3dgradient
  ├ ${prefix}blackpink
  ├ ${prefix}gluetext
- ╰❒`)
+ ╰❒`
+ let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: anu,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
 case 'mn9': {
-freplyy(` ╭─❒ 「 Photo Oxy Menu 」
- ├ ${prefix}shadow
- ├ ${prefix}romantic
- ├ ${prefix}smoke
- ├ ${prefix}burnpapper
- ├ ${prefix}naruto
- ├ ${prefix}lovemsg
- ├ ${prefix}grassmsg
- ├ ${prefix}lovetext
- ├ ${prefix}coffecup
- ├ ${prefix}butterfly
- ├ ${prefix}harrypotter
- ├ ${prefix}retrolol
- ╰❒`)
+let anu =`╭─❒ 「 Photo Oxy Menu 」
+├ ${prefix}shadow
+├ ${prefix}romantic
+├ ${prefix}smoke
+├ ${prefix}burnpapper
+├ ${prefix}naruto
+├ ${prefix}lovemsg
+├ ${prefix}grassmsg
+├ ${prefix}lovetext
+├ ${prefix}coffecup
+├ ${prefix}butterfly
+├ ${prefix}harrypotter
+├ ${prefix}retrolol
+╰❒`
+let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: anu,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
 case 'mn10': {
-freplyy(` ╭─❒ 「 Ephoto Menu 」
+let anu =`╭─❒ 「 Ephoto Menu 」
  ├ ${prefix}ffcover
  ├ ${prefix}crossfire
  ├ ${prefix}galaxy
@@ -1010,11 +1385,47 @@ freplyy(` ╭─❒ 「 Ephoto Menu 」
  ├ ${prefix}blackpink
  ├ ${prefix}igcertificate
  ├ ${prefix}ytcertificate
- ╰❒`)
+ ╰❒`
+ let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: anu,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
 case 'mn11': {
-freplyy(` ╭─❒ 「 Fun Menu 」
+let anu =`╭─❒ 「 Fun Menu 」
  ├ ${prefix}simih
  ├ ${prefix}halah
  ├ ${prefix}hilih
@@ -1029,11 +1440,47 @@ freplyy(` ╭─❒ 「 Fun Menu 」
  ├ ${prefix}tebak [option]
  ├ ${prefix}math [mode]
  ├ ${prefix}suitpvp [@tag]
- ╰❒ `)
+ ╰❒`
+ let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: anu,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
 case 'mn12': {
-freplyy(` ╭─❒ 「 Primbon Menu 」
+let anu =`╭─❒ 「 Primbon Menu 」
  ├ ${prefix}nomorhoki
  ├ ${prefix}artimimpi
  ├ ${prefix}artinama
@@ -1064,11 +1511,47 @@ freplyy(` ╭─❒ 「 Primbon Menu 」
  ├ ${prefix}masasubur
  ├ ${prefix}zodiak
  ├ ${prefix}shio
- ╰❒`)
+ ╰❒`
+ let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: anu,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
 case 'mn13': {
-freplyy(` ╭─❒ 「 Convert Menu 」
+let anu =`╭─❒ 「 Convert Menu 」
  ├ ${prefix}attp
  ├ ${prefix}ttp
  ├ ${prefix}toimage
@@ -1085,11 +1568,48 @@ freplyy(` ╭─❒ 「 Convert Menu 」
  ├ ${prefix}ebinary
  ├ ${prefix}dbinary
  ├ ${prefix}styletext
- ├ ${prefix}smeme`)
+ ├ ${prefix}smeme
+╰❒`
+let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: anu,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
 case 'mn14': {
-freplyy(` ╭─❒ 「 Database Menu 」
+let anu =`╭─❒ 「 Database Menu 」
  ├ ${prefix}setcmd
  ├ ${prefix}listcmd
  ├ ${prefix}delcmd
@@ -1098,30 +1618,151 @@ freplyy(` ╭─❒ 「 Database Menu 」
  ├ ${prefix}listmsg
  ├ ${prefix}getmsg
  ├ ${prefix}delmsg
- ╰❒`)
+ ╰❒`
+ let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: anu,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
 case 'mn15': {
-freplyy(` ╭─❒ 「 Anonymous Menu 」
+let anu =`╭─❒ 「 Anonymous Menu 」
  ├ ${prefix}anonymous
  ├ ${prefix}start
  ├ ${prefix}next
  ├ ${prefix}keluar
- ╰❒`)
+ ╰❒`
+ let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption:`
+╭─❒ 「 Anonymous Menu 」
+├ ${prefix}anonymous
+├ ${prefix}start
+├ ${prefix}next
+├ ${prefix}keluar
+╰❒`,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
 case 'mn16': {
-freplyy(` ╭─❒ 「 Islamic Menu 」
+let anu =`╭─❒ 「 Islamic Menu 」
  ├ ${prefix}iqra
  ├ ${prefix}hadist
  ├ ${prefix}alquran
  ├ ${prefix}juzamma
  ├ ${prefix}tafsirsurah
- ╰❒`)
+ ╰❒`
+ let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption:`
+╭─❒ 「 Islamic Menu 」
+├ ${prefix}iqra
+├ ${prefix}hadist
+├ ${prefix}alquran
+├ ${prefix}juzamma
+├ ${prefix}tafsirsurah
+╰❒`,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
 case 'mn17': {
-freplyy(` ╭─❒ 「 Voice Changer Menu 」
+let anu =`╭─❒ 「 Voice Changer Menu 」
  ├ ${prefix}bass
  ├ ${prefix}blown
  ├ ${prefix}deep
@@ -1133,7 +1774,43 @@ freplyy(` ╭─❒ 「 Voice Changer Menu 」
  ├ ${prefix}robot
  ├ ${prefix}slow
  ├ ${prefix}tupai
- ╰❒ `)
+ ╰❒`
+ let buttons = [{
+                                urlButton: {
+                                    displayText: 'Website',
+                                    url: global.web
+                                }
+                            },{
+                                quickReplyButton: {
+                                    displayText: 'Status Bot',
+                                    id: '.ping'
+                                }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Contact Owner',
+                                    id: '.owner'
+                                }  
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'Rent Bots',
+                                    id: '.sewa'
+                                }
+                            }]
+        let buttonMessage = {
+            image: thumb,
+            document: fs.readFileSync('./This.pdf'),
+            mimetype: kontol,
+            fileName: botname,
+            fileLength: 887890909999999,
+            pageCount: 1234567890123456789012345,
+            fileLength: 887890909999999,
+            caption: anu,
+            footer: footer,
+            mentionedJid: m.sender,
+            buttons: buttons,
+            headerType: 4
+        }
+        satria.sendMessage(m.chat, buttonMessage)
 }
 break
             case 'chatedit': {
@@ -1390,16 +2067,16 @@ break
 	break
 	case 'ban': case 'banned':{
 		if (!isCreator) throw mess.owner
-		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-		global.db.data.users[users].banned = true
-		await m.reply(`Success Banned @users`)
+		let target = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+		global.db.data.users[target].banned = true
+		await m.reply(`Success Banned ${target}`)
 	}
 	break
 	case 'unban': case 'unsuspend':{
 		if (!isCreator) throw mess.owner
-		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-		global.db.data.users[users].banned = false
-		await m.reply(`Success Unbanned @users`)
+		let target = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+		global.db.data.users[target].banned = false
+		await m.reply(`Success Unbanned @${target}`)
 	}
 	break
 	    case 'setname': case 'setsubject': {
@@ -1745,15 +2422,48 @@ break
                 }
              }
              break
-             case 'addprem':{
-             if (!text) return m.reply(`Nomornya?`)
-                let msgs = JSON.parse(fs.readFileSync('./src/prem.json'))
-                if (text.toLowerCase() in msgs) throw `'${text}' telah terdaftar di list Premium`
-                msgs[text.toLowerCase()] = quoted.fakeObj
-                fs.writeFileSync('./src/prem.json', JSON.stringify([]))
-reply(`Berhasil menambahkan ${q} di list Premium`)
-}
-break
+case 'antitoxic': {
+                if (!m.isGroup) throw mess.group
+                if (!isBotAdmins) throw mess.botAdmin
+                if (!isAdmins) throw mess.admin
+                if (args[0] === "on") {
+                if (db.data.chats[m.chat].antitoxic) return m.reply(`Sudah Aktif Sebelumnya`)
+                db.data.chats[m.chat].antitoxic = true
+                m.reply(`AntiToxic Aktif !`)
+                } else if (args[0] === "off") {
+                if (!db.data.chats[m.chat].antitoxic) return m.reply(`Sudah Tidak Aktif Sebelumnya`)
+                db.data.chats[m.chat].antitoxic = false
+                m.reply(`AntiToxic Tidak Aktif !`)
+                } else {
+                 let buttons = [
+                        { buttonId: 'antilink on', buttonText: { displayText: 'On' }, type: 1 },
+                        { buttonId: 'antilink off', buttonText: { displayText: 'Off' }, type: 1 }
+                    ]
+                    await satria.sendButtonText(m.chat, buttons, `Mode AntiToxic`, global.footer, m)
+                }
+             }
+             break
+case 'antiviewonce': {
+                if (!m.isGroup) throw mess.group
+                if (!isBotAdmins) throw mess.botAdmin
+                if (!isAdmins) throw mess.admin
+                if (args[0] === "on") {
+                if (db.data.chats[m.chat].antiviewonce) return m.reply(`Sudah Aktif Sebelumnya`)
+                db.data.chats[m.chat].antiviewonce = true
+                m.reply(`AntiViewonce Aktif !`)
+                } else if (args[0] === "off") {
+                if (!db.data.chats[m.chat].antiviewonce) return m.reply(`Sudah Tidak Aktif Sebelumnya`)
+                db.data.chats[m.chat].antiviewonce = false
+                m.reply(`AntiViewonce Tidak Aktif !`)
+                } else {
+                 let buttons = [
+                        { buttonId: 'antilink on', buttonText: { displayText: 'On' }, type: 1 },
+                        { buttonId: 'antilink off', buttonText: { displayText: 'Off' }, type: 1 }
+                    ]
+                    await satria.sendButtonText(m.chat, buttons, `Mode AntiViewonce`, global.footer, m)
+                }
+             }
+             break
              case 'mute': {
                 if (!m.isGroup) throw mess.group
                 if (!isBotAdmins) throw mess.botAdmin
@@ -1911,7 +2621,7 @@ break
             }
             }
             break
-            case 'koce':{
+            case 'bckontak':{
             	if (!isCreator) throw mess.owner
                 let anu = await store.chats.all().map(v => v.id)
             	let orang = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')
@@ -3043,7 +3753,7 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
                 ]
                 let buttonMessage = {
                     video: { url: anu.result.video_2 },
-                    caption: `Sagne Kok Sama Yang Gepeng`,
+                    caption: `Sagne Kok Sama anjime`,
                     footer: 'Press The Button Below',
                     buttons: buttons,
                     headerType: 5
@@ -3058,7 +3768,7 @@ let anjay = `https://zenzapis.xyz/creator/changemymind?text=${tes1}&apikey=satga
              if (!text) throw `what sticker are you looking for?`
              let media = await fetchJson(`https://zenzapis.xyz/searching/stickerline?query=${q}&apikey=satganzdevs`)
              let medium = media.result.sticker[Math.floor(Math.random() * media.result.sticker.length)]
-            	satria.sendImageAsSticker(m.chat, { image : { url : medium }}, m )
+            	satria.sendImageAsSticker(m.chat, { image : { url : medium }}, fsend )
             }
             break
             */
@@ -3600,25 +4310,9 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             }
             break
             case 'owner': case 'creator': {
-                satria.sendContact(m.chat, global.owner, m)
+                let dick = await satria.sendContact(m.chat, global.owner, m)
                 await sleep(100)
-                let btn = [{
-                                urlButton: {
-                                    displayText: 'Website',
-                                    url: global.web
-                                  }
-                                },{
-                                	urlButton: {
-                                    displayText: 'Github',
-                                    url: 'https://github.com/SatzzBotzz'
-                                    }
-                                    },{
-                                    quickReplyButton: {
-                                    displayText: 'Menu',
-                                    id: 'menu'
-                                    }  
-                                }]
-	satria.send5ButImg(m.chat,`${ucapanWaktu} - ${tagsender} \n\n itu owner ku, ingin tau lebih banyak?`, `© satria`, thumb, btn)
+                satria.sendMessage(m.chat, {audio : {url : "https://raw.githubusercontent.com/saipulanuar/Api-Github/main/audio/ownerku.mp3"}, mimetype:'audio/mpeg', ptt:true, contextInfo: { externalAdReply: { title: `CONTACT OWNER`, body: ` Join Bot's Official GC`, previewType: "PHOTO", thumbnailUrl: `https://chat.whatsapp.com/HCqm6RHLxaSBBKbjktvVeC`, thumbnail: thumb, sourceUrl: "https://chat.whatsapp.com/HCqm6RHLxaSBBKbjktvVeC"}}}, {quoted:dick})
             }
             break
             case 'playstore': {
@@ -3795,33 +4489,105 @@ title: "CHANGE MENU BOT",
             }
             break
 break
-case 'fiturlist': {
+case 'list': case 'help': case '?': {
  {
                 let sccod = [
                 {
 title: "List Menu",
                 rows: [
-{title: "Menu Group", rowId: `mn1`, description: `Show Menu Group`},
-{title: "Menu Main", rowId: `mn2`, description: `Show Menu Main`},
-{title: "Menu Owner", rowId: `mn3`, description: `Show Menu Owner`},
-{title: "Menu Webzone", rowId: `mn4`, description: `Show Menu Webzone`},
-{title: "Menu Downloader", rowId: `mn5`, description: `Show Menu Downloader`},
-{title: "Menu Search", rowId: `mn6`, description: `Show Menu Search`},
-{title: "Menu Random", rowId: `mn7`, description: `Show Menu Random`},
-{title: "Menu Textpro", rowId: `mn8`, description: `Show Menu Textpro`},
-{title: "Menu Photooxy", rowId: `mn9`, description: `Show Menu Photooxy`},
-{title: "Menu Ephoto", rowId: `mn10`, description: `Show Menu Ephoto`},
-{title: "Menu Fun", rowId: `mn11`, description: `Show Menu Fun`},
-{title: "Menu Primbon", rowId: `mn12`, description: `Show Menu Primbon`},
-{title: "Menu Convert", rowId: `mn1`, description: `Show Menu Convert`},
-{title: "Menu Database", rowId: `mn14`, description: `Show Menu Database`},
-{title: "Menu Anonymous", rowId: `mn15`, description: `Show Menu Anonymous`},
-{title: "Menu Islamic", rowId: `mn16`, description: `Show Menu Islamic`},
-{title: "Menu Voice", rowId: `mn17`, description: `Show Menu Voice`}
+                {
+title: "Group Menu",
+                rows: [
+{title: "Group Menu 👥", rowId: `mn1`, description: `Show Menu Group`}
+]},
+{
+title: "Main Menu",
+                rows: [
+{title: "Main Menu 🗣️", rowId: `mn2`, description: `Show Menu Main`}
+]},
+{
+title: "Owner Menu",
+                rows: [
+{title: "Owner Menu 👤", rowId: `mn3`, description: `Show Menu Owner`}
+]},
+{
+title: "Webszone Menu",
+                rows: [
+{title: "Webzone Menu 📡", rowId: `mn4`, description: `Show Menu Webzone`}
+]},
+{
+title: "Downloader Menu",
+                rows: [
+{title: "Downloader Menu 📩", rowId: `mn5`, description: `Show Menu Downloader`}
+]},
+{
+title: "Search Menu",
+                rows: [
+{title: "Search Menu 🔎", rowId: `mn6`, description: `Show Menu Search`}
+]},
+{
+title: "Random Menu",
+                rows: [
+{title: "Random Menu 🧠", rowId: `mn7`, description: `Show Menu Random`}
+]},
+{
+title: "TextprobMenu",
+                rows: [
+{title: "Textpro Menu 📃", rowId: `mn8`, description: `Show Menu Textpro`}
+]},
+{
+title: "PhotooxyMenu",
+                rows: [
+{title: "Photooxy Menu 🎞️", rowId: `mn9`, description: `Show Menu Photooxy`}
+]},
+{
+title: "Ephoto Menu",
+                rows: [
+{title: "Ephoto Menu 📷", rowId: `mn10`, description: `Show Menu Ephoto`}
+]},
+{
+title: "Fun Menu",
+                rows: [
+{title: "Fun Menu 🔫", rowId: `mn11`, description: `Show Menu Fun`}
+]},
+{
+title: "Primbon bMenu",
+                rows: [
+{title: "Primbon Menu 📖", rowId: `mn12`, description: `Show Menu Primbon`}
+]},
+{
+title: "Convert Menu",
+                rows: [
+{title: "convert Menu 🖨", rowId: `mn1`, description: `Show Menu Convert`}
+]},
+{
+title: "Database Menu",
+                rows: [
+{title: "Database Menu 📂", rowId: `mn14`, description: `Show Menu Database`}
+]},
+{
+title: "Anonymous Menu",
+                rows: [
+{title: "Anonymous Menu ❓", rowId: `mn15`, description: `Show Menu Anonymous`}
+]},
+{
+title: "Islamic Menu",
+                rows: [
+{title: "Islamic Menu 👳‍♀️", rowId: `mn16`, description: `Show Menu Islamic`}
+]},
+{
+title: "Voice Menu",
+                rows: [
+{title: "Voice Menu 🎙", rowId: `mn17`, description: `Show Menu Voice`}
+]},
+{
+title: "Wars Menu",
+                rows: [
+{title: "Wars Fetures", rowId: `wars`, description: `Show Wars Menu`}]}
                 ]
                 },
                 ]
-                satria.sendListMsg(m.chat, `Saya Bot Dari ${ownername} ini adalah List Menu Bot Whatsapp Simple !!`, `© Created By ${ownername}`, `Hai ${pushname}👋 *Selamat ${ucapanWaktu}*`, `Click Here`, sccod, m)
+                satria.sendListMsg(m.chat, `Saya Bot Dari ${ownername} ini adalah List Menu Bot Whatsapp Simple !!`, global.footer, `Hai ${pushname}👋 *${ucapanWaktu}*`, `Click Here`, sccod, m)
                 }
             }
             break
@@ -4192,13 +4958,13 @@ Date : ${salam}
                             }]
                          let setbot = db.data.settings[botNumber]
                         if (setbot.templateImage) {
-                        satria.send5ButImg(m.chat, anu, global.footer, thumb, btn, { quoted : floc })
+                        satria.send5ButImg(m.chat, anu, global.footer, thumb, btn, { quoted : m })
                         } else if (setbot.templateGif) {
-                        satria.send5ButGif(m.chat, anu, global.footer, visoka, btn, { quoted : floc })
+                        satria.send5ButGif(m.chat, anu, global.footer, visoka, btn, { quoted : m })
                         } else if (setbot.templateVid) {
-                        satria.send5ButVid(m.chat, anu, global.footer, vitum, btn, { quoted : floc })
+                        satria.send5ButVid(m.chat, anu, global.footer, vitum, btn, { quoted : m })
                         } else if (setbot.templateMsg) {
-                        satria.send5ButMsg(m.chat, anu, `© Created By Satganz DevDevs`, btn, { quoted : floc })
+                        satria.send5ButMsg(m.chat, anu, global.footer, btn, { quoted : m })
                         }
                      }
             break
@@ -4242,58 +5008,42 @@ Date : ${salam}
            break
             case 'cekprem': case 'premcek': case 'premiumcek':{
            if (!isPremium && isCreator) throw `Maaf Kamu Belum Terdaftar Di List Premium 🤡`
+ try {
+                    ppuser = await satria.profilePictureUrl(m.sender, 'image')
+                } catch {
+                    ppuser = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
+                }
 let anu =`
 ╭─❒ 「 Premium 」
 ├ Halo ${pushname}! Kamu Terdaftar di List Premium
 ╰❒
 `
- let btn = [{
-                                urlButton: {
-                                    displayText: 'Website',
-                                    url: global.web
-                                }
-                            },{
-                                quickReplyButton: {
-                                    displayText: 'Status Bot',
-                                    id: '.ping'
-                                }
-                            }, {
-                                quickReplyButton: {
-                                    displayText: 'Contact Owner',
-                                    id: '.owner'
-                                }  
-                            }, {
-                                quickReplyButton: {
-                                    displayText: 'Rent Bots',
-                                    id: '.sewa'
-                                }
-                            }]
-satria.send5ButImg(m.chat, anu, global.footer, thumb, btn, { quoted : fliveLoc })
+satria.sendMessage(m.chat, { image: { url: ppuser }, caption: `${anu}` }, { quoted: fsend})
 }
 break
-            case 'mess': case 'c': case 'chat': case 'kirim':{
-            	if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
-		db.data.users[m.sender].limit -= 1 // -1 limit
-            	if (!text) throw m.reply (`Examples of use : ${command} *>Name of the sender <*|@tag|*>Message<*`)
+            case 'menfenss': case 'menfess': case 'mess': case 'c': case 'kirim':{
+            	if (!text) throw m.reply (`Examples of use : ${command} @tag|*>Message<*`)
 let bekk = m.sender
-let pk = pushname
 let bebek = bekk.replace(/[@s.whatsapnet]/g, "").replace(/[@S.WHATSAPNET]/g, "")
-let frome = text.split("|")[0]
-let orang = text.split("|")[1]
-let ortu = orang.replace(/[@]/g, "").replace(/[@]/g, "")
-let pesann = text.split("|")[2]
-let butt =[{ buttonId: `markread ${pushname}|${bebek}|Congrats \n${pk}/${orang} Read Your Message!!`, buttonText: { displayText: 'Tandai Telah Di Baca' }, type: 1 }]
-reply(`Sending Message : ${pesann} To : ${orang} From : ${frome}`)
-	await satria.sendButtonText(`${ortu}@s.whatsapp.net`, butt, pesann,`Message From : ${frome}`, m)
+let orang = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')
+let ortu = orang.replace(/[^@0-9]/g, '')
+let pesann = text.split("|")[1]
+reply(`Sending Message : ${pesann} To : ${ortu}`)
+	const buttons = [
+        { buttonId: `.markread ${bebek}|Congrats \n${pushname}/${orang} Read Your Message!!`, buttonText: { displayText: `Read` }, type: 1 }
+        ]
+satria.sendButtonText(ortu + "@s.whatsapp.net", buttons, `💬 \n\n\n\n\n\n\n\n\n ${pesann}`, `\`\`\`Anonymous Message\`\`\``, fsend)
 }
 reply('Success')
 break
 case 'markread':{
-	let frome = text.split("|")[0]
-let orang = text.split("|")[1]
-let pesann = text.split("|")[2]
-let butt =[{ buttonId: 'u', buttonText: { displayText: 'Alhamdulillah' }, type: 1 }]
-	await satria.sendButtonText(`${orang}@s.whatsapp.net`, butt, pesann,`Message From : ${frome}`, m)
+let orang = text.split("|")[0]
+let pesann = text.split("|")[1]
+const buttons = [
+        { buttonId: `y`, buttonText: { displayText: `Okay` }, type: 1 }
+        ]
+        
+       satria.sendButtonText(orang + "@s.whatsapp.net", buttons, `💥\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n ${pesann}`, `\`\`\`Anonymous Message\`\`\``, fsend)
 }
 reply('Success')
 break
@@ -4512,26 +5262,13 @@ satria.sendMessage(m.chat, {audio: kuadra, mimetype:'audio/mpeg', ptt:true, cont
 }
 break
 default:
-if (/^.*(bot|BOT|Bot|bOt|BoT)/.test(m.text)) {
-satria.sendMessage(m.chat, {audio: { url : "https://a.uguu.se/neNKFssY.mp3"}, mimetype:'audio/mpeg', ptt:true, contextInfo:{  externalAdReply: { showAdAttribution: true,
-mediaType:  2,
-mediaUrl: 'https://wa.me/6281316701742',
-title: '「 ❔ 」',
-body: ucapanWaktu,
-sourceUrl: "https://bit.ly/SatganzDevs", jpegthumbnail: "https://telegra.ph/file/261ccb0b18e76e3b4acdb.jpg"
-}
-}}, { quoted: m })
-}
-if (budy.startsWith('.')) {
-reply(`Perintah *${command}* Belum Da di Daftar Menu!`)
-await sleep(99)
-let gomen = fs.readFileSync('./sound/gomen.mp3')
-satria.sendMessage(m.chat, {audio: gomen, mimetype:'audio/ogg; codecs=opus', ptt:true, mediaKey: "9D3wGvcENzMp7O/ALiuQobuJL66phQlGpsm/FWiUChs=",contextInfo: { externalAdReply: { title: ` ${global.botname}`, body: ` Join Bot's Official GC`, previewType: "PHOTO", thumbnailUrl: `https://chat.whatsapp.com/HCqm6RHLxaSBBKbjktvVeC`, thumbnail: thumb, sourceUrl: "https://chat.whatsapp.com/HCqm6RHLxaSBBKbjktvVeC"}}}, { quoted: m})
-            }
 //<---- Didyoumean Versi Ribet ---->//
 if (/^own|onwer$/.test(budy?.toLowerCase())) {
 let buttons =[{ buttonId: `.owner`, buttonText: { displayText: 'Ya' }, type: 1 }, { buttonId: `.dyms`, buttonText: { displayText: 'Tidak' }, type: 1 }]
 satria.sendButtonText(m.chat, buttons, `Mungkin yang kamu maksud adalah *owner*?`, global.footer, m)}
+if (/^nemu|menju|menuj$/.test(budy?.toLowerCase())) {
+let buttons =[{ buttonId: `.menu`, buttonText: { displayText: 'Ya' }, type: 1 }, { buttonId: `.dyms`, buttonText: { displayText: 'Tidak' }, type: 1 }]
+satria.sendButtonText(m.chat, buttons, `Mungkin yang kamu maksud adalah *menu*?`, global.footer, m)}
 
                 if (budy.startsWith('=>')) {
                     if (!isCreator) return m.reply(mess.owner)
