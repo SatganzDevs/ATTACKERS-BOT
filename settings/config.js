@@ -15,9 +15,10 @@ global.APIKeys = {
 global.web = 'https://bit.ly/SatganzDevs'
 global.thumb = { url : "https://zenzapis.xyz/randomimage/kucing?apikey=satganzdevs" }
 global.owner = ['6281316701742']
-global.premium = ["6281266891985","6281266082412","6282182518286","6282232780320","6281369266141","6283153626877","62895618712695","6282316744487"]
+global.premium = ["6281266891985","6281266082412","6282182518286","6282232780320","6281369266141","6283153626877","62895618712695","6282316744487","6282284362628","6285761121009","6285761123192"]
 global.botname = '𝘈𝘵𝘵𝘢𝘤𝘬𝘦𝘳𝘴 𝘉𝘰𝘵𝘴'
 global.ownername = '𝗦𝗮𝘁𝗴𝗮𝗻𝘇 𝗗𝗲𝘃𝘀'
+global.footer = '© SatganzDevs | 2022'
 global.packname = '𝘈𝘵𝘵𝘢𝘤𝘬𝘦𝘳𝘴 𝘉𝘰𝘵𝘴'
 global.author = 'Satganz Devs'
 global.sessionName = 'session'
@@ -28,7 +29,7 @@ pagi: 'Good Morning',
 siang: 'Good Afternoon',
 sore: 'Good Evening',
 malam: 'Good Night',
-tmalam: 'Good Midnight'
+malam: 'Good '
 }
 global.mess = {
 success: '✓ Success',
